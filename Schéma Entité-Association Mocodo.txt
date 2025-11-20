@@ -1,6 +1,6 @@
 Utilisateur: id_utilisateur, pseudo, hashcode, est_administrateur
 possede, 11 Image, 0N Utilisateur
-Image: id_image, id_utilisateur, nom_image
-Monument: id_monument, lieu, nom_monument, description, nom_photo
+Image: id_image, nom_image
+Monument: id_monument, nom_monument, description, nom_photo
 est_localise_a, 11 Monument, 1N Lieu
 Lieu: code_dept, dept, region, commune
