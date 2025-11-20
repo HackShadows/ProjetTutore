@@ -1,0 +1,10 @@
+Utilisateur(i͟d͟_͟u͟t͟i͟l͟i͟s͟a͟t͟e͟u͟r͟, pseudo, hashcode, est_administrateur)
+
+
+Image(i͟d͟_͟i͟m͟a͟g͟e͟, nom_image, #id_utilisateur)
+
+
+Monument(i͟d͟_͟m͟o͟n͟u͟m͟e͟n͟t͟, nom_monument, description, nom_photo, #lieu)
+
+
+Lieu(c͟o͟d͟e͟_͟d͟e͟p͟t͟, dept, region, commune)
