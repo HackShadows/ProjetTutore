@@ -1,0 +1,15 @@
+{% macro nav_item(target, active = false) %}
+<a class="nav-link p-1 {% if active %}active{% endif %}" href={% if active %}"#"{% else %}"{{ target }}"{% endif %}>
+	{{ caller() }}
+</a>
+{% endmacro %}
+
+{% macro nav(items, current = 0) %}
+<div class="d-flex flex-column m-1 bg-secondary-subtle">
+	{% for item in items %}
+		{% call nav_item(item.target, loop.index0 == current) %}
+			{{ item.text }}
+		{% endcall %}
+	{% endfor %}
+</div>
+{% endmacro %}

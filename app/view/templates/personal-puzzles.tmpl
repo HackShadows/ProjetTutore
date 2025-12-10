@@ -1,0 +1,13 @@
+{% extends "page.tmpl" %}
+
+{% block nav %}
+{{ nav_tmpl.nav(current = 2, items = [
+{"target": "index.html", "text": "Accueil"},
+{"target": "map.html", "text": "Carte des puzzles"},
+{"target": "personal-puzzles.html", "text": "Mes puzzles"}
+]) }}
+{% endblock %}
+
+{% block main %}
+<i>Liste des puzzles créés par l'utilisateur.</i>
+{% endblock %}
