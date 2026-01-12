@@ -13,4 +13,4 @@ with open(destination + sys.argv[2], 'w') as file :
     file.write(template.render())
 
 if len(sys.argv) > 3 and sys.argv[3]:
-    webbrowser.open("file:///home/cauch/Documents/School/ProjetPuzzle/projet-tutore/app/view/" + destination + sys.argv[2])
+    webbrowser.open(destination + sys.argv[2])

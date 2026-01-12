@@ -1,6 +1,28 @@
+<<<<<<< HEAD
 Utilisateur: id_utilisateur, pseudo, hashcode, est_administrateur
 possede, 01 Image, 0N Utilisateur
 Image: id_image, nom_image
 Monument: id_monument, nom_monument, description, nom_photo
 est_localise_a, 11 Monument, 1N Lieu
 Lieu: code_dept, dept, region, commune
+=======
+:
+:
+:
+Permission: id_permission, nom_permission
+
+Image: id_image, nom_image, url
+est_localise_a, 11 PuzzlePublic, 1N Lieu :geoloc
+Lieu: code_dept, nom_dept, nom_region, nom_commune
+role_permission, 0N Role, 1N Permission
+
+/XT\ Image <- PuzzlePrive, PuzzlePublic
+PuzzlePublic: nom_monument, description
+role_utilisateur, 1N Utilisateur, 0N Role
+Role: id_role, nom_role
+
+PuzzlePrive:
+possede, 11 PuzzlePrive, 0N Utilisateur
+Utilisateur: id_utilisateur, pseudo, hashcode
+:
+>>>>>>> 3805af2 (debut BD script insertion pas fini)
