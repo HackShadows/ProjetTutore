@@ -2,13 +2,15 @@ import psycopg2
 
 def get_connection():
     return psycopg2.connect(
-        host="xa6wqy.h.filess.io",
-        database="PuzzleTUT_itselfrise",
-        user="PuzzleTUT_itselfrise",
-        password="e3d0a6e5aef6f3874d530272672c6fd332e32f8c",
-        port="61036"
+        host='ep-delicate-truth-ab60ob3h-pooler.eu-west-2.aws.neon.tech',
+        database='neondb',
+        user='neondb_owner',
+        password='npg_o3JNrPmGx2td',
     )
 
 def get_cursor():
     conn = get_connection()
-    return conn, conn.cursor()
+    return conn.cursor()
+
+cursor = get_cursor()
+print("connected")
