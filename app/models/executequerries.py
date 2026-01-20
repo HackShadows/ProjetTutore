@@ -18,5 +18,5 @@ def SelectOne(query, params=None):
         print("Database error:", e)
         return None
 
-cursor = get_cursor()
+conn, cursor = get_cursor()
 print(SelectAll("SELECT * FROM Lieu"))

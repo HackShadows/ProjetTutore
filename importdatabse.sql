@@ -79,6 +79,36 @@ INSERT INTO role_permission ("id_role", "id_permission") VALUES
 (1, 2),
 (2, 2);
 
+/*
+CREATE TABLE rawdata (
+    REF TEXT,
+    NUMP TEXT,
+    PAYS TEXT,
+    Code_DPT TEXT,
+    Ancienne_Régions TEXT, 
+    INSEE TEXT,
+    EDIF TEXT,
+    ADRESSE TEXT,
+    COMMUNE TEXT,
+    OBJ TEXT,
+    LIEUCOR TEXT,
+    AUTP TEXT,
+    LEG TEXT,
+    SCLE TEXT,
+    DATPV TEXT,
+    SERIE TEXT,
+    TYPDOC TEXT,
+    VIDEO_v TEXT,
+    AUTOEU TEXT,
+    geoloc TEXT,
+    LBASE TEXT,
+    VIDEO_p TEXT,
+    CPY TEXT,
+    Code_Officiel_Région TEXT,
+    Région TEXT,
+    Code_Officiel_Courant_Département TEXT,
+    Département TEXT
+);*/
 
-
-
+<--INSERT INTO Lieu ( nom_commune , code_dept , nom_dept , nom_region ) SELECT DISTINCT commune,code_officiel_courant_département, département, région FROM rawdata WHERE commune IS NOT NULL ON CONFLICT (nom_commune) DO NOTHING;-->
+<-- INSERT INTO Image ( nom_image , url , nom_monument , description , nom_commune , geoloc ) SELECT video_v,video_p,edif,leg,commune,geoloc FROM rawdata WHERE commune IS NOT NULL AND video_p IS NOT NULL;-->

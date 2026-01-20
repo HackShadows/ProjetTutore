@@ -10,7 +10,15 @@ def get_connection():
 
 def get_cursor():
     conn = get_connection()
-    return conn.cursor()
+    return conn, conn.cursor()
 
-cursor = get_cursor()
+conn, cursor = get_cursor()
 print("connected")
+
+with open("photographies_monuments.csv", "r", encoding="utf-8") as f:
+    cursor.copy_expert(
+        "COPY rawdata FROM STDIN WITH (FORMAT csv, HEADER true, DELIMITER ';')",
+        f
+    )
+    conn.commit()
+
