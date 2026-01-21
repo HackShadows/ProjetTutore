@@ -7,21 +7,21 @@ CREATE DATABASE puzzle_db;
 CREATE TABLE Image (
   PRIMARY KEY (id_image),
   id_image       INT NOT NULL GENERATED ALWAYS AS IDENTITY,
-  nom_image      VARCHAR(42),
-  url            VARCHAR(100),
+  nom_image      TEXT,
+  url            TEXT,
   id_utilisateur INT NULL,
-  nom_monument   VARCHAR(100) NULL,
-  description    VARCHAR(100) NULL,
-  nom_commune    VARCHAR(42) NULL,
-  geoloc         VARCHAR(42) NULL
+  nom_monument   TEXT NULL,
+  description    TEXT NULL,
+  nom_commune    TEXT NULL,
+  geoloc         TEXT NULL
 );
 
 CREATE TABLE Lieu (
   PRIMARY KEY (nom_commune),
-  nom_commune VARCHAR(42) NOT NULL,
-  code_dept   VARCHAR(3),
-  nom_dept    VARCHAR(42),
-  nom_region  VARCHAR(42)
+  nom_commune TEXT NOT NULL,
+  code_dept   TEXT,
+  nom_dept    TEXT,
+  nom_region  TEXT
 );
 
 CREATE TABLE Permission (
