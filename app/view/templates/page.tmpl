@@ -8,9 +8,9 @@
 	<title>GeoPuzzle</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../css/bootstrap.css">
-	<link rel="stylesheet" href="../css/style.css">
-	<script src="../js/bootstrap.js"></script>
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<script src="static/js/bootstrap.js"></script>
 	{% endblock %}
 </head>
 
@@ -27,9 +27,9 @@
 			<nav>
 				{% block nav %}
 				{{ nav_tmpl.nav(current = 0, items = [
-				{"target": "index.html", "text": "Accueil"},
-				{"target": "map.html", "text": "Carte des puzzles"},
-				{"target": "personal-puzzles.html", "text": "Mes puzzles"}
+				{"target": "/", "text": "Accueil"},
+				{"target": "/map", "text": "Carte des puzzles"},
+				{"target": "/personal-puzzles", "text": "Mes puzzles"}
 				]) }}
 				{% endblock %}
 			</nav>

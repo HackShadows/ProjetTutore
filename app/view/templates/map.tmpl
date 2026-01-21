@@ -2,12 +2,12 @@
 
 {% block nav %}
 {{ nav_tmpl.nav(current = 1, items = [
-{"target": "index.html", "text": "Accueil"},
-{"target": "map.html", "text": "Carte des puzzles"},
-{"target": "personal-puzzles.html", "text": "Mes puzzles"}
+{"target": "/", "text": "Accueil"},
+{"target": "/map", "text": "Carte des puzzles"},
+{"target": "/personal-puzzles", "text": "Mes puzzles"}
 ]) }}
 {% endblock %}
 
 {% block main %}
-<img src="../img/map(temporary).jpg" class="img-fluid">
+<img src="/static/img/map(temporary).jpg" class="img-fluid">
 {% endblock %}

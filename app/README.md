@@ -13,3 +13,13 @@ Installer les dépendances :
 ```sh
 pip install -r requirements.in
 ```
+
+
+Lancer l'application (localhost 8000 par défaut) :
+```sh
+fastapi run serveur.py
+```
+ou
+```
+fastapi dev serveur.py
+```
