@@ -1,13 +1,14 @@
 {% extends "page.tmpl" %}
 
+{% import "departments.tmpl" as departments %}
+
 {% block nav %}
-{{ nav_tmpl.nav(current = 1, items = [
-{"target": "/", "text": "Accueil"},
-{"target": "/map", "text": "Carte des puzzles"},
-{"target": "/personal-puzzles", "text": "Mes puzzles"}
-]) }}
+{{ nav_tmpl.nav(nav_items, 1) }}
 {% endblock %}
 
 {% block main %}
-<img src="/static/img/map(temporary).jpg" class="img-fluid">
+<div class="map-container p-1">
+	<img src="../img/Carte_France_OSM.jpg" class="map-img">
+	{{ departments.departments_map() }}
+</div>
 {% endblock %}
