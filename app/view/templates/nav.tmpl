@@ -1,15 +1,21 @@
-{% macro nav_item(target, active = false) %}
+{% macro nav_item(text, target, active = false, level = 0) %}
+
+{% set ns = namespace(indent = "") %}
+{% for i in range(level) %}
+	{% set ns.indent = ns.indent ~ "| " %}
+{% endfor %}
+
 <a class="nav-link p-1 {% if active %}active{% endif %}" href={% if active %}"#"{% else %}"{{ target }}"{% endif %}>
-	{{ caller() }}
+	{{ ns.indent ~ text }}
 </a>
 {% endmacro %}
 
 {% macro nav(items, current = 0) %}
+
 <div class="d-flex flex-column m-1 bg-secondary-subtle">
 	{% for item in items %}
-		{% call nav_item(item.target, loop.index0 == current) %}
-			{{ item.text }}
-		{% endcall %}
+		{% set level = item.level if( item.level is defined ) else 0 %}
+		{{ nav_item(text = item.text, target = item.target, active = loop.index0 == current, level = level) }}
 	{% endfor %}
 </div>
 {% endmacro %}

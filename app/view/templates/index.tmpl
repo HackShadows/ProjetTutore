@@ -1,13 +1,19 @@
 {% extends "page.tmpl" %}
 
 {% block nav %}
-{{ nav_tmpl.nav(current = 0, items = [
-{"target": "/", "text": "Accueil"},
-{"target": "/map", "text": "Carte des puzzles"},
-{"target": "/personal-puzzles", "text": "Mes puzzles"}
-]) }}
+{{ nav_tmpl.nav(nav_items, 0) }}
 {% endblock %}
 
 {% block main %}
-Ceci est la page d'accueil
+<h2>Puzzles à la carte :</h2>
+<p>
+	En allant sur la <a href="{{ pages_path }}map.html">carte des puzzles</a>, vous pouvez choisir un monument aléatoire dans un département.<br>
+	Vous aurez alors une photo du monument à reconstituer.<br>
+	Quand vous pensez l'avoir reconnu, vous pouvez deviner de quel monument il s'agit pour des points bonus.
+</p>
+<hr>
+<h2>Puzzles personels :</h2>
+<p>
+	Vous pouvez créer vos propres puzzles à partir de vos photos via <a href="{{ pages_path }}personal-puzzles/create-puzzle.html">Créer un puzzle</a>
+</p>
 {% endblock %}

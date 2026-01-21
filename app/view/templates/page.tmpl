@@ -2,15 +2,19 @@
 
 {% import "nav.tmpl" as nav_tmpl %}
 
+{% set pages_path = app_path ~ "/view/renders/" %}
+
 <html lang="fr">
 <head>
 	{% block head %}
+
 	<title>GeoPuzzle</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/static/css/bootstrap.css">
-	<link rel="stylesheet" href="/static/css/style.css">
-	<script src="static/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="{{ app_path }}/view/css/bootstrap.css">
+	<link rel="stylesheet" href="{{ app_path }}/view/css/style.css">
+	<script src="{{ app_path }}/view/js/bootstrap.js"></script>
+	
 	{% endblock %}
 </head>
 
@@ -25,12 +29,14 @@
 		</header>
 		<div class="d-flex flex-row">
 			<nav>
+				{% set nav_items = [
+					{"target": pages_path ~ "index.html", "text": "Accueil"},
+					{"target": pages_path ~ "map.html", "text": "Carte des puzzles"},
+					{"target": pages_path ~ "personal-puzzles/index.html", "text": "Mes puzzles"},
+					{"target": pages_path ~ "personal-puzzles/create-puzzle.html", "text": "Créer un puzzle", "level": 1}]
+				%}
 				{% block nav %}
-				{{ nav_tmpl.nav(current = 0, items = [
-				{"target": "/", "text": "Accueil"},
-				{"target": "/map", "text": "Carte des puzzles"},
-				{"target": "/personal-puzzles", "text": "Mes puzzles"}
-				]) }}
+				{{ nav_tmpl.nav(items = nav_items, current = 0) }}
 				{% endblock %}
 			</nav>
 			<main>
