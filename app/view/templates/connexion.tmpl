@@ -1,0 +1,27 @@
+{% extends "page.tmpl" %}
+{% block main %}
+	<h1 class="title" id="contactFormTitle">Se connecter</h1>
+
+	<form name="contactForm" id="contactForm" @submit.prevent="validate" method="POST">
+		{# <label for="nom">Nom :</label>
+		<input type="text" id="nom" name="nom" x-model="nom">
+		<template x-if="errors.nom">
+			<div class="error" x-text="errors.nom"></div>
+		</template> #}
+
+		<label for="pseudo">Pseudo :</label>
+		<input type="text" id="pseudo" name="pseudo">
+
+		<label for="password">Mot de passe :</label>
+		<input type="password" name="password" id="password">
+		<template x-if="errors.message">
+			<div class="error" x-text="errors.message"></div>
+		</template>
+
+		<button type="submit">Se connecter</button>
+
+		<div style="margin-top: 15px; text-align: center; font-size: 0.9em;">
+            <a href="/inscription">Pas encore de compte ? S'inscrire</a>
+        </div>
+	</form>
+{% endblock %}

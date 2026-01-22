@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Form, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-
+from controllers.connexionController import registerUser
 
 app = FastAPI()
 app.mount("/static/css", StaticFiles(directory="view/css/"), name="static_css")
@@ -27,6 +27,26 @@ def get_root(request :Request) :
 @app.get("/personal-puzzles", response_class=HTMLResponse)
 def get_root(request :Request) :
 	return templates.TemplateResponse(name="personal-puzzles.tmpl", request=request)
+
+@app.get("/connexion", response_class=HTMLResponse)
+def get_root(request :Request) :
+	print(request)
+	return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': False})
+
+@app.get("/inscription", response_class=HTMLResponse)
+def get_root(request :Request) :
+	return templates.TemplateResponse(name="inscription.tmpl", request=request, context={"data": False})
+
+@app.post("/traitementInscription", response_class=HTMLResponse)
+def post_inscription(request: Request, username: str = Form(...), password: str=Form(...), confirm_password: str=Form(...)):
+	success, message = registerUser(username, password, confirm_password)
+	print(f"succes : {success}, message : {message}")
+	if success:
+		return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
+	else:
+		return templates.TemplateResponse(name="inscription.tmpl", request=request, context={'data': {'username': username},
+																							 'error': message})
+
 
 
 

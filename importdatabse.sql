@@ -52,7 +52,7 @@ CREATE TABLE Utilisateur (
   PRIMARY KEY (id_utilisateur),
   id_utilisateur INT NOT NULL GENERATED ALWAYS AS IDENTITY,
   pseudo         VARCHAR(42),
-  hashcode       VARCHAR(42)
+  hashcode       VARCHAR(100)
 );
 
 ALTER TABLE Image ADD FOREIGN KEY (nom_commune) REFERENCES Lieu (nom_commune);

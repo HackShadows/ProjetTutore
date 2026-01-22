@@ -1,4 +1,6 @@
 import psycopg2
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 
 def get_connection():
     return psycopg2.connect(
@@ -10,15 +12,23 @@ def get_connection():
 
 def get_cursor():
     conn = get_connection()
-    return conn, conn.cursor()
+    return conn, conn.cursor(cursor_factory=RealDictCursor)
 
 conn, cursor = get_cursor()
 print("connected")
-
-with open("photographies_monuments.csv", "r", encoding="utf-8") as f:
-    cursor.copy_expert(
-        "COPY rawdata FROM STDIN WITH (FORMAT csv, HEADER true, DELIMITER ';')",
-        f
-    )
-    conn.commit()
+#
+# try:
+#     # Vider la table pour libérer de l'espace
+#     cursor.execute("TRUNCATE TABLE rawdata;")
+#     conn.commit()
+#     print("Table rawdata vidée avec succès.")
+# except Exception as e:
+#     print(e)
+#
+# with open("../photographies_monuments.csv", "r", encoding="utf-8") as f:
+#     cursor.copy_expert(
+#         "COPY rawdata FROM STDIN WITH (FORMAT csv, HEADER true, DELIMITER ';')",
+#         f
+#     )
+#     conn.commit()
 
