@@ -12,7 +12,7 @@ a.active {
 .map-container {
 	position: relative;
 	width: 70vw;
-	height: calc(70vw * 1080 / 1476);
+	height: calc(70vw * 1898 / 2000);
 	margin-left: auto;
 	margin-right: auto;
 
@@ -27,11 +27,23 @@ a.active {
 
 #department-shapes path {
 	fill: #ffffff00;
-	stroke: #00000060;
-	stroke-width: 0.15em;
-	stroke-linejoin: round;
 }
 #department-shapes path:hover {
 	fill: #ffffff60;
 	stroke: #00000060;
+}
+
+.puzzle-cell {
+	border: solid;
+	border-color: #d0d0d0;
+	border-width: 0.1em;
+}
+
+.puzzle-image-container {
+	cursor: move;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 }

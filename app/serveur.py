@@ -6,6 +6,13 @@ from fastapi.templating import Jinja2Templates
 from controllers.connexionController import registerUser, logIn
 from models.connexionModel import verify_token
 
+board_size = 4
+puzzle_tiles = [
+	{"id": 0, "img": "/static/img/test_tile1.png", "rotation": 0},
+	{"id": 1, "img": "/static/img/test_tile2.png", "rotation": 0}]
+
+puzzle_context = {"board_size": board_size, "puzzle_tiles": puzzle_tiles}
+
 app = FastAPI()
 app.mount("/static/css", StaticFiles(directory="view/css/"), name="static_css")
 app.mount("/static/img", StaticFiles(directory="view/img/"), name="static_img")
@@ -30,15 +37,13 @@ def get_root(request :Request, username: str = Depends(get_current_user)) :
 	print(f"Username : {username}, connected : {user_is_connected}")
 	return templates.TemplateResponse(name="index.tmpl", request=request, context={'user': username, 'connected': user_is_connected})
 
-
 @app.get("/map", response_class=HTMLResponse)
 def get_root(request :Request) :
 	return templates.TemplateResponse(name="map.tmpl", request=request)
 
-
 @app.get("/personal-puzzles", response_class=HTMLResponse)
 def get_root(request :Request) :
-	return templates.TemplateResponse(name="personal-puzzles.tmpl", request=request)
+	return templates.TemplateResponse(name="personal-puzzles/index.tmpl", request=request)
 
 @app.get("/connexion", response_class=HTMLResponse)
 def get_root(request :Request) :
@@ -81,4 +86,19 @@ def logout():
 	response = RedirectResponse(url="/", status_code=303)
 	response.delete_cookie("access_token")
 	return response
+@app.get("/personal-puzzles/create-puzzle", response_class=HTMLResponse)
+def get_root(request :Request) :
+	return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request)
+
+@app.get("/play", response_class=HTMLResponse)
+def get_root(request :Request) :
+	return templates.TemplateResponse(name="play/index.tmpl", request=request)
+
+@app.get("/play/official-puzzle", response_class=HTMLResponse)
+def get_root(request :Request) :
+	return templates.TemplateResponse(name="play/official-puzzle.tmpl", request=request, context=puzzle_context)
+
+@app.get("/play/personal-puzzle", response_class=HTMLResponse)
+def get_root(request :Request) :
+	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=puzzle_context)
 

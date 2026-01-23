@@ -1,0 +1,76 @@
+{% extends "page.tmpl" %}
+
+
+{% block head %}
+
+{{ super() }}
+
+<style>
+{% set board_size_vw = 50 %}
+{% set cell_size_vw = board_size_vw / board_size %}
+{% set cell_overflow_vw = cell_size_vw * 0.375 %}
+
+#tile-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: {{ 2*cell_overflow_vw }}vw;
+	padding: {{ cell_overflow_vw }}vw;
+}
+.puzzle-board {
+	width:  {{board_size_vw}}vw;
+	height: {{board_size_vw}}vw;
+}
+.puzzle-row {
+	width: {{board_size_vw}}vw;
+	height: {{cell_size_vw}}vw;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+.puzzle-cell, .puzzle-tile {
+	position: relative;
+	width: {{cell_size_vw}}vw;
+	height: {{cell_size_vw}}vw;
+}
+.puzzle-image-container {
+	position: absolute;
+	left:   -{{cell_overflow_vw}}vw;
+	right:  -{{cell_overflow_vw}}vw;
+	top:    -{{cell_overflow_vw}}vw;
+	bottom: -{{cell_overflow_vw}}vw;
+	z-index: 1;
+}
+</style>
+
+<script src="/static/js/script-puzzle-tiles.js" defer></script>
+
+{% endblock %}
+
+
+{% block main %}
+
+<div id="tile-container">
+	<div class="puzzle-board">
+
+		{% for row in range(board_size) %}
+		<div class="puzzle-row puzzle-row-{{ row+1 }}">
+			{% for col in range(board_size) %}
+			<div class="puzzle-cell puzzle-cell-{{ row+1 }}-{{ col+1 }}">
+			</div>
+			{% endfor %}
+		</div>
+		{% endfor %}
+		
+	</div>
+
+	{% for tile in puzzle_tiles %}
+	<div class="puzzle-tile" draggable="true">
+		<div class="puzzle-image-container">
+			<img src="{{ tile.img }}"></img>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock %}
+
