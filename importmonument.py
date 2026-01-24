@@ -3,7 +3,7 @@ import csv
 def Insert_SQL(line):
 	output.write("INSERT INTO Lieu ( nom_commune , code_dept , nom_dept , nom_region ) VALUES ("+str(line[dico['nom_commune']])+", "+str(line[dico['code_dept']])+", "+str(line[dico['nom_dept']])+", "+str(line[dico['nom_region']])+") ON CONFLICT (nom_commune) DO NOTHING;")
 	output.write('\n')
-	output.write("INSERT INTO Image ( nom_image , url , nom_monument , description , nom_commune , geoloc ) VALUES ('"+str(line[dico['nom_image']].split('/')[-1])+", "+str(line[dico['url']])+", "+str(line[dico['nom_monument']])+", "+str(line[dico['description']])+", "+str(line[dico['nom_commune']])+", "+str(line[dico['geoloc']])+");")
+	output.write("INSERT INTO Image ( nom_image , url , nom_monument , description , nom_commune , geoloc, public ) VALUES ('"+str(line[dico['nom_image']].split('/')[-1])+", "+str(line[dico['url']])+", "+str(line[dico['nom_monument']])+", "+str(line[dico['description']])+", "+str(line[dico['nom_commune']])+", "+str(line[dico['geoloc']])+", TRUE);")
 	output.write('\n')
 
 def splitline(line):

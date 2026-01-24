@@ -13,7 +13,8 @@ CREATE TABLE Image (
   nom_monument   TEXT NULL,
   description    TEXT NULL,
   nom_commune    TEXT NULL,
-  geoloc         TEXT NULL
+  geoloc         TEXT NULL,
+  public         BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE Lieu (
