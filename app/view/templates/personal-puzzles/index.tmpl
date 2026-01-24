@@ -1,13 +1,20 @@
 {% extends "page.tmpl" %}
 
 {% block nav %}
-{{ nav_tmpl.nav(nav_items, 2) }}
+	{{ nav_tmpl.nav(nav_items, 2) }}
 {% endblock %}
 
 {% block main %}
-{% for puzzle in personal_puzzles %}
-{% else %}
-	<p>Vous n'avez pas encore créé de puzzle.</p>
-{% endfor %}
-<a href="/personal-puzzles/create-puzzle"><button class="btn btn-primary">Créer un puzzle</button></a>
+	{% if listImages %}
+		<li>
+			{% for puzzle in listImages %}
+				<ul> {{ puzzle }} </ul>
+			{% endfor %}
+		</li>
+	{% else %}
+		<p>Vous n'avez pas encore créé de puzzle.</p>
+	{% endif %}
+	<a href="/personal-puzzles/create-puzzle">
+		<button class="btn btn-primary">Créer un puzzle</button>
+	</a>
 {% endblock %}

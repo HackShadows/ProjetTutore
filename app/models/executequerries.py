@@ -129,5 +129,5 @@ def select(nomTable, attributs="*", limit=None, where="", orderby=None, desc=Fal
 		'SELECT {fields} {count} {distinct} FROM {table} {join} {where} {groupby} {orderby} {limit}').format(
 		table=sql.Identifier(nomTable), fields=attributs, count=count, limit=limit, where=where, groupby=groupby,
 		orderby=orderby, distinct=distinct, join=join)
-	print(f"query : {query}")
+	print(f"query : {query.as_string(conn)}")
 	return execute_select_query(query)

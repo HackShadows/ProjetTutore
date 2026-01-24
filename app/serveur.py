@@ -4,8 +4,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from controllers.connexionController import registerUser, logIn
-from controllers.puzzleController import registerImage
+from controllers.puzzleController import registerImage, getAllPuzzleFromUser
 from models.connexionModel import verify_token
+from models.mapModel import DepartementData
 
 app = FastAPI()
 app.mount("/static/css", StaticFiles(directory="view/css/"), name="static_css")
@@ -44,7 +45,11 @@ def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 
 @app.get("/personal-puzzles", response_class=HTMLResponse)
 def get_root(request :Request, user_context: str = Depends(get_current_user)) :
-	return templates.TemplateResponse(name="personal-puzzles/index.tmpl", request=request, context=user_context)
+	if user_context['user_name'] is not None:
+		listImages = getAllPuzzleFromUser(user_context['user_name'])
+		return templates.TemplateResponse(name="personal-puzzles/index.tmpl", request=request, context={"listImages": listImages} | user_context)
+	else:
+		return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.get("/connexion", response_class=HTMLResponse)
 def get_root(request :Request, user_context: str = Depends(get_current_user)) :
@@ -115,3 +120,14 @@ def post_creation_puzzle(request: Request, nom_image: str = Form(...), nom_monum
 		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context=user_context)
 	else:
 		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context={'error': message} | user_context)
+
+@app.post("/selectionDepartement")
+def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
+	print("entree dans traitementCreationPuzzle")
+	print(f"Numéro du departement {data.number}, nom : {data.name}")
+	return {"redirect_url": "/difficulte"}
+
+@app.get("/difficulte", response_class=HTMLResponse)
+def get_difficulte(request: Request, user_context: str = Depends(get_current_user)):
+	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=user_context)
+

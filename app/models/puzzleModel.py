@@ -1,6 +1,7 @@
 from .executequerries import select, execute_other_query, get_cursor
 from psycopg2 import sql
 
+
 def save_image_to_db(nom_image: str, nom_monument: str, description: str, nom_commune: str, longitude: str,
 					 latitude: str, url: str, username: str):
 	print("entree dans save image to db")
@@ -28,3 +29,10 @@ def save_image_to_db(nom_image: str, nom_monument: str, description: str, nom_co
 	except Exception as e:
 		print(f"Erreur de bd : {e}")
 		return False, e
+
+
+def getImagesUser(username):
+
+	return select("image", ['id_image', 'nom_image', 'id_utilisateur',
+			'nom_monument', 'description', 'nom_commune', 'geoloc', 'public'],
+				  where=f"pseudo='{username}'", join="utilisateur", using="id_utilisateur")
