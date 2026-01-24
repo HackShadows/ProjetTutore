@@ -84,6 +84,7 @@ def logout():
 	response = RedirectResponse(url="/", status_code=303)
 	response.delete_cookie("access_token")
 	return response
+
 @app.get("/personal-puzzles/create-puzzle", response_class=HTMLResponse)
 def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 	return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context=user_context)

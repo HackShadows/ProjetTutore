@@ -18,6 +18,8 @@
 	Vous pouvez créer vos propres puzzles à partir de vos photos via <a href="/personal-puzzles/create-puzzle">Créer un puzzle</a>
 </p>
 <p>
-	<a href="/connexion">Connectez-vous</a> pour pouvoir créer des puzzles, ou <a href="/inscription">créez un compte</a> si vous n'en avez pas.
+	{% if not user_name %}
+		<a href="/connexion">Connectez-vous</a> pour pouvoir créer des puzzles, ou <a href="/inscription">créez un compte</a> si vous n'en avez pas.
+	{% endif %}
 </p>
 {% endblock %}

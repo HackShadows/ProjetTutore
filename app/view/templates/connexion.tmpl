@@ -8,20 +8,26 @@
 {% endblock %}
 
 {% block main %}
-<h1 class="title" id="contactFormTitle">Se connecter</h1>
+	{% if not user_name %}
+		<h1 class="title" id="contactFormTitle">Se connecter</h1>
 
-<form action="/traitementConnexion" id="contactForm" method="POST">
+		<form action="/traitementConnexion" id="contactForm" method="POST">
 
-	<label for="username">Pseudo :</label>
-	<input type="text" id="username" name="username" value="{{ data.username }}" required>
+		<label for="username">Pseudo :</label>
+		<input type="text" id="username" name="username" value="{{ data.username }}" required>
 
-	<label for="password">Mot de passe :</label>
-	<input type="password" name="password" id="password" required>
+		<label for="password">Mot de passe :</label>
+		<input type="password" name="password" id="password" required>
 
-	<button type="submit" class="btn btn-primary">Se connecter</button>
+		<button type="submit" class="btn btn-primary">Se connecter</button>
 
-</form>
-<div class="mt-1">
-	Pas encore de compte ? <a href="/inscription"><button class="btn btn-primary">S'inscrire</button></a>
-</div>
+		</form>
+		<div class="mt-1">
+			Pas encore de compte ? <a href="/inscription"><button class="btn btn-primary">S'inscrire</button></a>
+		</div>
+	{% else %}
+		<form action="/deconnexion"  method="GET">
+		<button type="submit" class="btn btn-primary">Se déconnecter</button>
+		</form>
+	{% endif %}
 {% endblock %}
