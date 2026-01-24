@@ -28,7 +28,8 @@ async def get_current_user(access_token: str = Cookie(default=None)):
 	"""
 	if not access_token:
 		name = None
-	name = verify_token(access_token)
+	else:
+		name = verify_token(access_token)
 	connected = name is not None
 	return {"user_name": name, "user_connected": connected}
 
