@@ -6,12 +6,6 @@
 {% endblock %}
 
 {% block main %}
-{% if connected %}
-    <span>Bonjour, {{ user }}</span>
-    <a href="/deconnexion">Se déconnecter</a>
-{% else %}
-    <a href="/connexion">Se connecter</a>
-{% endif %}
 <h2>Puzzles à la carte :</h2>
 <p>
 	En allant sur la <a href="/map">carte des puzzles</a>, vous pouvez choisir un monument aléatoire dans un département.<br>
@@ -22,5 +16,8 @@
 <h2>Puzzles personels :</h2>
 <p>
 	Vous pouvez créer vos propres puzzles à partir de vos photos via <a href="/personal-puzzles/create-puzzle">Créer un puzzle</a>
+</p>
+<p>
+	<a href="/connexion">Connectez-vous</a> pour pouvoir créer des puzzles, ou <a href="/inscription">créez un compte</a> si vous n'en avez pas.
 </p>
 {% endblock %}

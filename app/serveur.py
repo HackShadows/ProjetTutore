@@ -6,13 +6,6 @@ from fastapi.templating import Jinja2Templates
 from controllers.connexionController import registerUser, logIn
 from models.connexionModel import verify_token
 
-board_size = 4
-puzzle_tiles = [
-	{"id": 0, "img": "/static/img/test_tile1.png", "rotation": 0},
-	{"id": 1, "img": "/static/img/test_tile2.png", "rotation": 0}]
-
-puzzle_context = {"board_size": board_size, "puzzle_tiles": puzzle_tiles}
-
 app = FastAPI()
 app.mount("/static/css", StaticFiles(directory="view/css/"), name="static_css")
 app.mount("/static/img", StaticFiles(directory="view/img/"), name="static_img")
@@ -21,51 +14,56 @@ app.mount("/static/js" , StaticFiles(directory="view/js/" ), name="static_js" )
 templates = Jinja2Templates(directory="view/templates/", autoescape=True, auto_reload=True)
 
 
+board_size = 4
+puzzle_tiles = [
+	{"id": 0, "img": "/static/img/test_tile1.png", "rotation": 0},
+	{"id": 1, "img": "/static/img/test_tile2.png", "rotation": 0}]
+
+puzzle_context = {"board_size": board_size, "puzzle_tiles": puzzle_tiles}
+
 async def get_current_user(access_token: str = Cookie(default=None)):
 	"""
 	Récupère le cookie 'access_token' automatiquement.
-	Si le cookie est absent ou invalide, retourne None.
+	Si le cookie est absent ou invalide, name sera None.
 	"""
 	if not access_token:
-		return None
-	username = verify_token(access_token)
-	return username
+		name = None
+	name = verify_token(access_token)
+	connected = name is not None
+	return {"user_name": name, "user_connected": connected}
 
 @app.get("/", response_class=HTMLResponse, )
-def get_root(request :Request, username: str = Depends(get_current_user)) :
-	user_is_connected = username is not None
-	print(f"Username : {username}, connected : {user_is_connected}")
-	return templates.TemplateResponse(name="index.tmpl", request=request, context={'user': username, 'connected': user_is_connected})
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="index.tmpl", request=request, context=user_context)
 
 @app.get("/map", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="map.tmpl", request=request)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="map.tmpl", request=request, context=user_context)
 
 @app.get("/personal-puzzles", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="personal-puzzles/index.tmpl", request=request)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="personal-puzzles/index.tmpl", request=request, context=user_context)
 
 @app.get("/connexion", response_class=HTMLResponse)
-def get_root(request :Request) :
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 	print(request)
-	return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': False})
+	return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': False} | user_context)
 
 @app.get("/inscription", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="inscription.tmpl", request=request, context={"data": False})
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="inscription.tmpl", request=request, context={"data": False} | user_context)
 
 @app.post("/traitementInscription", response_class=HTMLResponse)
-def post_inscription(request: Request, username: str = Form(...), password: str=Form(...), confirm_password: str=Form(...)):
+def post_inscription(request: Request, username: str = Form(...), password: str=Form(...), confirm_password: str=Form(...), user_context: str = Depends(get_current_user)):
 	success, message = registerUser(username, password, confirm_password)
 	print(f"succes : {success}, message : {message}")
 	if success:
 		return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
 	else:
-		return templates.TemplateResponse(name="inscription.tmpl", request=request, context={'data': {'username': username},
-																							 'error': message})
+		return templates.TemplateResponse(name="inscription.tmpl", request=request, context={'data': {'username': username}, 'error': message} | user_context)
 
 @app.post("/traitementConnexion", response_class=HTMLResponse)
-def post_connexion(request: Request, username: str = Form(...), password: str=Form(...)):
+def post_connexion(request: Request, username: str = Form(...), password: str=Form(...), user_context: str = Depends(get_current_user)):
 	print("entree dans post_connexion")
 	success, result = logIn(username, password) # result est soit le message d'erreur soit le token
 	print(f"succes : {success}, result : {result}")
@@ -78,8 +76,7 @@ def post_connexion(request: Request, username: str = Form(...), password: str=Fo
 		response.set_cookie(key="access_token", value=token, httponly=True)
 		return response
 	else:
-		return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': {'username': username},
-																							 'error': result})
+		return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': {'username': username}, 'error': result} | user_context)
 
 @app.get("/deconnexion")
 def logout():
@@ -87,18 +84,18 @@ def logout():
 	response.delete_cookie("access_token")
 	return response
 @app.get("/personal-puzzles/create-puzzle", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context=user_context)
 
 @app.get("/play", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="play/index.tmpl", request=request)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="play/index.tmpl", request=request, context=user_context)
 
 @app.get("/play/official-puzzle", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="play/official-puzzle.tmpl", request=request, context=puzzle_context)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="play/official-puzzle.tmpl", request=request, context=user_context | puzzle_context)
 
 @app.get("/play/personal-puzzle", response_class=HTMLResponse)
-def get_root(request :Request) :
-	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=puzzle_context)
+def get_root(request :Request, user_context: str = Depends(get_current_user)) :
+	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=user_context | puzzle_context)
 

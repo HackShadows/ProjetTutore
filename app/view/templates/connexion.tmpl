@@ -1,5 +1,12 @@
 {% extends "page.tmpl" %}
 
+{% block nav %}
+{% set nav_items = nav_items + [
+	{"target": "/connexion", "text": "Connexion", "level": 1},
+	{"target": "/inscription", "text": "Inscription", "level": 1}] %}
+{{ nav_tmpl.nav(nav_items, 7) }}
+{% endblock %}
+
 {% block main %}
 <h1 class="title" id="contactFormTitle">Se connecter</h1>
 
@@ -11,10 +18,10 @@
 	<label for="password">Mot de passe :</label>
 	<input type="password" name="password" id="password" required>
 
-	<button type="submit">Se connecter</button>
+	<button type="submit" class="btn btn-primary">Se connecter</button>
 
-	<div style="margin-top: 15px; text-align: center; font-size: 0.9em;">
-		<a href="/inscription">Pas encore de compte ? S'inscrire</a>
-	</div>
 </form>
+<div class="mt-1">
+	Pas encore de compte ? <a href="/inscription"><button class="btn btn-primary">S'inscrire</button></a>
+</div>
 {% endblock %}
