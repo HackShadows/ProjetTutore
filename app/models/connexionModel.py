@@ -1,6 +1,4 @@
-from pydantic import BaseModel
 from .executequerries import select, execute_other_query, get_cursor
-import hashlib, hmac, os, secrets
 from psycopg2 import sql
 from datetime import datetime, timedelta, UTC
 from jose import jwt, JWTError

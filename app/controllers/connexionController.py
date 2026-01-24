@@ -8,6 +8,9 @@ def registerUser(username: str, password: str, confirm_password: str):
 	if password != confirm_password:
 		return False, "Les deux mots de passe ne sont pas identiques"
 
+	if username in ["None", "null"]:
+		return False, f"{username} n'est pas un pseudo valide"
+
 	if get_user_by_name(username):
 		return False, "Le pseudo est déjà pris"
 
