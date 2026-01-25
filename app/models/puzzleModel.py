@@ -51,3 +51,7 @@ def selectImageByDept(id: str):
 	randomIndex = randint(0, len(allImages))
 	return allImages[randomIndex] if len(allImages) > 0 else None
 
+def selectImageById(id: str):
+	image = select('image', where=f"id_image={id}")
+	return image[0] if image else None
+

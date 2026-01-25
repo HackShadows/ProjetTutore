@@ -7,6 +7,10 @@
 {% endblock %}
 
 {% block main %}
-	Selection de la difficulté pour le département {{ departement }}
-	Voici l'image séléctionnée : {{ image }}
+	{% if departement %}
+		<p> Selection de la difficulté pour le département {{ departement }}</p>
+	{% endif %}
+	<p>
+		Voici l'image séléctionnée : {{ image }}
+	</p>
 {% endblock %}
