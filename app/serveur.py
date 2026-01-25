@@ -107,7 +107,12 @@ def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 	return templates.TemplateResponse(name="play/index.tmpl", request=request, context=user_context)
 
 @app.get("/play/official-puzzle", response_class=HTMLResponse)
-def get_official_puzzle(request: Request, image_id: int, size: int = 4, user_context: dict = Depends(get_current_user)):
+def get_official_puzzle(request: Request, image_id: int = None, size: int = 4, user_context: dict = Depends(get_current_user)):
+    
+    if image_id is None:
+        print("Accès direct au puzzle sans image : redirection vers la carte.")
+        return RedirectResponse(url="/map", status_code=status.HTTP_303_SEE_OTHER)
+    
     image = getImageById(image_id)
 
     tiles = []

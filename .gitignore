@@ -3,3 +3,4 @@
 **/__pycache__/
 **/.ve*/
 **/*.swp
+**/user_images/*
