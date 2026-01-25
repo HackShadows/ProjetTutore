@@ -1,19 +1,19 @@
 Permission: id_permission, nom_permission
-:
-:
-:
-
 role_permission, 0N Role, 1N Permission
 Role: id_role, nom_role
 role_utilisateur, 1N Utilisateur, 0N Role
-Utilisateur: id_utilisateur, pseudo, hashcode
 
-Lieu: nom_commune, code_dept, nom_dept, nom_region
-est_localise_a, 11 PuzzlePublic, 1N Lieu :geoloc
+:
 PuzzlePrive:
 possede, 11 PuzzlePrive, 0N Utilisateur
+Utilisateur: id_utilisateur, pseudo, hashcode
+
+Image: id_image, nom_image, url
+/XT\ Image <- PuzzlePrive, PuzzlePublic, PhotoProfil
+PhotoProfil:
+est_associee_a, 11 PhotoProfil, 01 Utilisateur
 
 :
 PuzzlePublic: nom_monument, description
-/XT\ Image <- PuzzlePrive, PuzzlePublic
-Image: id_image, nom_image, url
+est_localise_a, 11 PuzzlePublic, 1N Lieu :geoloc
+Lieu: nom_commune, code_dept, nom_dept, nom_region

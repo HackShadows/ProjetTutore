@@ -1,10 +1,14 @@
-Utilisateur(i͟d͟_͟u͟t͟i͟l͟i͟s͟a͟t͟e͟u͟r͟, pseudo, hashcode, est_administrateur)
+Utilisateur(i͟d͟_͟u͟t͟i͟l͟i͟s͟a͟t͟e͟u͟r͟, pseudo, hashcode, #id_image)
+
+Image(i͟d͟_͟i͟m͟a͟g͟e͟, nom_image, url, #id_utilisateur, nom_monument, description, #nom_commune, geoloc, public)
+
+Lieu(n͟o͟m͟_͟c͟o͟m͟m͟u͟n͟e͟, code_dept, nom_dept, nom_region)
+
+Role(i͟d͟_͟r͟o͟l͟e͟, nom_role)
+
+Permission(i͟d͟_͟p͟e͟r͟m͟i͟s͟s͟i͟o͟n͟, nom_permission)
 
 
-Image(i͟d͟_͟i͟m͟a͟g͟e͟, nom_image, #id_utilisateur)
+role_utilisateur(#i͟d͟_͟u͟t͟i͟l͟i͟s͟a͟t͟e͟u͟r͟, #i͟d͟_͟r͟o͟l͟e͟)
 
-
-Monument(i͟d͟_͟m͟o͟n͟u͟m͟e͟n͟t͟, nom_monument, description, nom_photo, #lieu)
-
-
-Lieu(c͟o͟d͟e͟_͟d͟e͟p͟t͟, dept, region, commune)
+role_permission(#i͟d͟_͟r͟o͟l͟e͟, #i͟d͟_͟p͟e͟r͟m͟i͟s͟s͟i͟o͟n͟)

@@ -53,7 +53,8 @@ CREATE TABLE Utilisateur (
   PRIMARY KEY (id_utilisateur),
   id_utilisateur INT NOT NULL GENERATED ALWAYS AS IDENTITY,
   pseudo         VARCHAR(42),
-  hashcode       VARCHAR(100)
+  hashcode       VARCHAR(100),
+  id_image		 INT NULL
 );
 
 ALTER TABLE Image ADD FOREIGN KEY (nom_commune) REFERENCES Lieu (nom_commune);
@@ -64,6 +65,8 @@ ALTER TABLE role_permission ADD FOREIGN KEY (id_role) REFERENCES Role (id_role);
 
 ALTER TABLE role_utilisateur ADD FOREIGN KEY (id_role) REFERENCES Role (id_role);
 ALTER TABLE role_utilisateur ADD FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur (id_utilisateur);
+
+ALTER TABLE Utilisateur ADD FOREIGN KEY (id_image) REFERENCES Image (id_image);
 
 -- Insertion
 INSERT INTO Role ("nom_role") VALUES 
