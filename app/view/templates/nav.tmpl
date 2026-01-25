@@ -5,8 +5,8 @@
 	{% set ns.indent = ns.indent ~ "| " %}
 {% endfor %}
 
-<a class="nav-link p-1 {% if active %}active{% endif %}" href={% if active %}"#"{% else %}"{{ target }}"{% endif %}>
-	{{ ns.indent ~ text }}
+<a class="nav-link p-1 {% if active %}active{% endif %}" href="{{ target }}">
+    {{ ns.indent ~ text }}
 </a>
 {% endmacro %}
 

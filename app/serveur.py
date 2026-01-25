@@ -139,8 +139,30 @@ def get_official_puzzle(request: Request, image_id: int = None, size: int = 4, u
 	)
 
 @app.get("/play/personal-puzzle", response_class=HTMLResponse)
-def get_root(request :Request, user_context: str = Depends(get_current_user)) :
-	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=user_context | puzzle_context)
+def get_personal_puzzle(request: Request, image_id: int = None, size: int = 4, user_context: dict = Depends(get_current_user)):
+    if image_id is None:
+        return RedirectResponse(url="/personal-puzzles", status_code=status.HTTP_303_SEE_OTHER)
+
+    image = getImageById(image_id)
+    
+    tiles = []
+    for i in range(size * size):
+        tiles.append({
+            "id": i,
+            "x": i % size,
+            "y": i // size,
+            "rotation": 0
+        })
+    
+    hashSolution = getHashSolution(tiles)
+    context = {
+        "image": image,
+        "board_width": size,
+        "board_height": size,
+        "puzzle_tiles": tiles,
+        "solution_hash": hashSolution
+    }
+    return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=context | user_context)
 
 @app.post("/traitementCreationPuzzle", response_class=HTMLResponse)
 def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str = Form(None), file_image: UploadFile = File(None),
@@ -192,16 +214,20 @@ def post_selection_departement(request: Request, data: DepartementData, user_con
 	return {"redirect_url": f"/difficulte?number={data.number}"}
 
 @app.get("/difficulte", response_class=HTMLResponse)
-def get_difficulte(request: Request, number: str, user_context: dict = Depends(get_current_user)):
-	image = getImageDept(number)
-	nom_dept = get_department_info(number)
+def get_difficulte(request: Request, number: str = None, user_context: dict = Depends(get_current_user)):
+    if number is None:
+        return RedirectResponse(url="/map", status_code=status.HTTP_303_SEE_OTHER)
 
-	context = {
-		"image": image,
-		"departement_num": number,
-		"departement_nom": nom_dept
-	}
-	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=context | user_context)
+    image = getImageDept(number)
+    nom_dept = get_department_info(number)
+
+    context = {
+        "image": image,
+        "departement_num": number,
+        "departement_nom": nom_dept,
+        "mode": "official"
+    }
+    return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=context | user_context)
 
 @app.post("/supprimerImage", response_class=HTMLResponse)
 def post_supprimerImage(request: Request, id: str = Form(...), user_context: str = Depends(get_current_user)):
@@ -212,7 +238,10 @@ def post_supprimerImage(request: Request, id: str = Form(...), user_context: str
 
 @app.post("/choisirImage", response_class=HTMLResponse)
 def post_choisirImage(request: Request, image_id: int = Form(...), user_context: str = Depends(get_current_user)):
-	print("entree dans choisirImage")
-	print(f"id de l'image : {image_id}")
-	image = getImageById(image_id)
-	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context={"image": image, "departement": None	} |user_context)
+    image = getImageById(image_id)
+    return templates.TemplateResponse(name="difficulte.tmpl", request=request, context={
+        "image": image, 
+        "departement_num": None,
+        "departement_nom": None,
+        "mode": "personal"
+    } | user_context)

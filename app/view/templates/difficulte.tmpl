@@ -1,5 +1,9 @@
 {% extends "page.tmpl" %}
 
+{% block nav %}
+    {{ nav_tmpl.nav(nav_items, 3) }}
+{% endblock %}
+
 {% block main %}
 <div class="row justify-content-center">
     <div class="col-md-8 text-center">
@@ -23,16 +27,12 @@
             <div class="card-body">
                 <h4 class="card-title mb-4">Choisissez la difficulté</h4>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=3" class="btn btn-success btn-lg">
-                        Facile (3x3)
-                    </a>
-                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=4" class="btn btn-warning btn-lg">
-                        Moyen (4x4)
-                    </a>
-                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=5" class="btn btn-danger btn-lg">
-                        Difficile (5x5)
-                    </a>
-                </div>
+					{% set play_url = "/play/personal-puzzle" if mode == "personal" else "/play/official-puzzle" %}
+					
+					<a href="{{ play_url }}?image_id={{ image.id_image }}&size=3" class="btn btn-success btn-lg">Facile (3x3)</a>
+					<a href="{{ play_url }}?image_id={{ image.id_image }}&size=4" class="btn btn-warning btn-lg">Moyen (4x4)</a>
+					<a href="{{ play_url }}?image_id={{ image.id_image }}&size=5" class="btn btn-danger btn-lg">Difficile (5x5)</a>
+				</div>
             </div>
         </div>
     </div>

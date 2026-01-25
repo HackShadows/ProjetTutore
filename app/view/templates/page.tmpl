@@ -61,19 +61,16 @@
 
 		<div class="d-flex flex-row flex-grow-1">
             <nav class="bg-light border-end">
-                {% set nav_items = [
-                    {"target": "/", "text": "Accueil"},
-                    {"target": "/map", "text": "Carte des puzzles"},
-                    {"target": "/personal-puzzles", "text": "Mes puzzles"},
-                    {"target": "/personal-puzzles/create-puzzle", "text": "Créer un puzzle", "level": 1},
-                    {"target": "/play", "text": "Jouer"},
-                    {"target": "/play/official-puzzle", "text": "Puzzle officiel", "level": 1},
-                    {"target": "/play/personal-puzzle", "text": "Puzzle personnel", "level": 1}]
-                %}
-                {% block nav %}
-                {{ nav_tmpl.nav(items = nav_items, current = 0) }}
-                {% endblock %}
-            </nav>
+				{% set nav_items = [
+					{"target": "/", "text": "Accueil"},
+					{"target": "/map", "text": "Carte des puzzles"},
+					{"target": "/personal-puzzles", "text": "Mes puzzles"},
+					{"target": "/play", "text": "Jouer"}
+				] %}
+				{% block nav %}
+				{{ nav_tmpl.nav(items = nav_items, current = 0) }}
+				{% endblock %}
+			</nav>
 
 			<main class="container py-5">
 				{% block main %}
