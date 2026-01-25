@@ -59,7 +59,7 @@ def get_department_info(dept_code: str):
     """Récupère le nom du département dans la table Lieu."""
     conn, cursor = get_cursor()
     try:
-        query = sql.SQL("SELECT nom_dept FROM Lieu WHERE code_dept = {code} LIMIT 1").format(code=sql.Literal(dept_code))
+        query = sql.SQL("SELECT nom_dept FROM Lieu WHERE code_dept = '{code}' LIMIT 1").format(code=sql.Literal(dept_code))
         cursor.execute(query)
         result = cursor.fetchone()
         
