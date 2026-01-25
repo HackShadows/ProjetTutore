@@ -124,7 +124,7 @@ def post_creation_puzzle(request: Request, nom_image: str = Form(...), nom_monum
 @app.post("/selectionDepartement")
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
 	print("entree dans traitementCreationPuzzle")
-	print(f"Numéro du departement {data.number}, nom : {data.name}")
+	print(f"Numéro du departement {data.number}")
 	return {"redirect_url": "/difficulte"}
 
 @app.get("/difficulte", response_class=HTMLResponse)

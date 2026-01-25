@@ -1,9 +1,8 @@
 
-function selectionDepartement(number, name) {
-	console.log(`Le département cliqué est le ${number}, ${name}`);
+function selectionDepartement(number) {
+	console.log(`Le département cliqué est le ${number}`);
 	const params = {
 		number: String(number),
-		name: name,
 	};
 	const options = {
 		method: 'POST',
