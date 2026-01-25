@@ -1,30 +1,63 @@
 {% extends "page.tmpl" %}
 
 {% block nav %}
-	{{ nav_tmpl.nav(nav_items, 3) }}
+    {{ nav_tmpl.nav(nav_items, 2) }}
 {% endblock %}
 
 {% block main %}
-	<h3>Page de création de puzzle.</h3>
-	{% if message %}
-	<h3>{{ message }}</h3>
-	{% endif %}
-	{% if erreur %}
-	<h3 style="color: red">{{ erreur }}</h3>
-	{% endif %}
-	<form action="/traitementCreationPuzzle" method="post" enctype="multipart/form-data">
-		<label for="nom_image">Nom de l'image</label>
-		<input type="text" id="nom_image" name="nom_image" required>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-header bg-primary text-white p-3">
+                <h3 class="h5 mb-0">Page de création de puzzle</h3>
+            </div>
+            <div class="card-body p-4">
+                
+                {% if message %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
 
-		<label for="url">URL de l'image</label>
-		<input type="url" id="url" name="url">
+                {% if erreur %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ erreur }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
 
-		<label for="file_image">Choisir un fichier</label>
-		<input type="file" accept="image/*" id="file_image" name="file_image">
+                <p class="text-muted small mb-4">
+                    Remplissez les informations ci-dessous pour ajouter une nouvelle image à votre collection de puzzles.
+                </p>
 
-		<button type="submit" class="btn btn-primary">Valider</button>
+                <form action="/traitementCreationPuzzle" method="post" enctype="multipart/form-data">
+                    
+                    <div class="mb-3">
+                        <label for="nom_image" class="form-label fw-bold">Nom de l'image</label>
+                        <input type="text" id="nom_image" name="nom_image" class="form-control" placeholder="Ex: Ma superbe photo" required>
+                    </div>
 
-	</form>
+                    <div class="mb-3">
+                        <label for="url" class="form-label fw-bold">URL de l'image</label>
+                        <input type="url" id="url" name="url" class="form-control" placeholder="https://exemple.com/image.jpg">
+                        <div class="form-text">Optionnel si vous téléchargez un fichier.</div>
+                    </div>
 
+                    <div class="mb-4">
+                        <label for="file_image" class="form-label fw-bold">Choisir un fichier local</label>
+                        <input type="file" accept="image/*" id="file_image" name="file_image" class="form-control">
+                    </div>
 
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Valider la création
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
