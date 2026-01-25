@@ -6,8 +6,9 @@
 {{ super() }}
 
 <style>
-{% set board_size_vw = 50 %}
-{% set cell_size_vw = board_size_vw / board_size %}
+{% set board_width_vw = 50 %}
+{% set board_height_vw = board_width_vw * board_height / board_width %}
+{% set cell_size_vw = board_width_vw / board_width %}
 {% set cell_overflow_vw = cell_size_vw * 0.375 %}
 
 #tile-container {
@@ -17,11 +18,11 @@
 	padding: {{ cell_overflow_vw }}vw;
 }
 .puzzle-board {
-	width:  {{board_size_vw}}vw;
-	height: {{board_size_vw}}vw;
+	width:  {{board_width_vw}}vw;
+	height: {{board_height_vw}}vw;
 }
 .puzzle-row {
-	width: {{board_size_vw}}vw;
+	width: {{board_width_vw}}vw;
 	height: {{cell_size_vw}}vw;
 	display: flex;
 	flex-direction: row;
@@ -48,14 +49,19 @@
 
 
 {% block main %}
+{# données du serveur à passer au js #}
+<span display="none" id="board-width">{{ board_width }}</span>
+<span display="none" id="board-height">{{ board_height }}</span>
+<span display="none" id="solution-hash">{{ solution_hash }}</span>
 
+<p class="puzzle-hint">Vous pouvez déplacer les pièces en "drag and drop", et les tourner avec un double-clic</p>
 <div id="tile-container">
 	<div class="puzzle-board">
 
-		{% for row in range(board_size) %}
-		<div class="puzzle-row puzzle-row-{{ row+1 }}">
-			{% for col in range(board_size) %}
-			<div class="puzzle-cell puzzle-cell-{{ row+1 }}-{{ col+1 }}">
+		{% for row in range(board_width) %}
+		<div class="puzzle-row" id="puzzle-row-{{ row+1 }}">
+			{% for col in range(board_height) %}
+			<div class="puzzle-cell" id="puzzle-cell-{{ row+1 }}-{{ col+1 }}">
 			</div>
 			{% endfor %}
 		</div>
@@ -64,9 +70,9 @@
 	</div>
 
 	{% for tile in puzzle_tiles %}
-	<div class="puzzle-tile" draggable="true">
+	<div class="puzzle-tile" id="puzzle-tile-{{ tile.id }}" draggable="true">
 		<div class="puzzle-image-container">
-			<img src="{{ tile.img }}"></img>
+			<img src="{{ tile.img }}" style="transform: rotate(0deg)"></img>
 		</div>
 	</div>
 	{% endfor %}
