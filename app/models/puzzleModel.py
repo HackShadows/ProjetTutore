@@ -56,16 +56,20 @@ def selectImageById(id: str):
 	return image[0] if image else None
 
 def get_department_info(dept_code: str):
-    """Récupère le nom du département dans la table Lieu."""
-    conn, cursor = get_cursor()
-    try:
-        query = sql.SQL("SELECT nom_dept FROM lieu WHERE code_dept = {code} LIMIT 1").format(code=sql.Literal(dept_code))
-        cursor.execute(query)
-        result = cursor.fetchone()
-        
-        if result:
-            return result['nom_dept']
-        return "Inconnu"
-    except Exception as e:
-        print(f"Erreur SQL get_department_info : {e}")
-        return "Inconnu"
+	"""Récupère le nom du département dans la table Lieu."""
+	conn, cursor = get_cursor()
+	try:
+		query = sql.SQL("SELECT nom_dept FROM lieu WHERE code_dept = {code} LIMIT 1").format(code=sql.Literal(dept_code))
+		cursor.execute(query)
+		result = cursor.fetchone()
+
+		if result:
+			return result['nom_dept']
+		return "Inconnu"
+	except Exception as e:
+		print(f"Erreur SQL get_department_info : {e}")
+		return "Inconnu"
+
+def selectMonumentNameById(id_image: str):
+	name = select('image', 'nom_monument', where=f"id_image={id_image}")
+	return name[0] if name else None

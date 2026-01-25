@@ -6,10 +6,5 @@
 {% endblock %}
 
 {% block main %}
-<form action="/play/official-puzzle" id="monument-guess-form" method="POST">
-	<input type="text" id="monument" name="monument" placeholder="Nom du monument" required>
-	<button type="submit" class="btn btn-primary">C'est ce monument !</button>
-</form>
-
 {{ super() }}
 {% endblock %}

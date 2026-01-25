@@ -1,4 +1,5 @@
-from models.puzzleModel import save_image_to_db, getImagesUser, deleteImageById, selectImageByDept, selectImageById
+import unicodedata
+from models.puzzleModel import save_image_to_db, getImagesUser, deleteImageById, selectImageByDept, selectImageById, selectMonumentNameById
 
 def registerImage(nom_image: str,url: str, username: str):
 	return save_image_to_db(nom_image, url, username)
@@ -27,5 +28,13 @@ def getHashSolution(tiles, size):
 		res += chr(char + offset)
 	print(res)
 	return res
+
+def getMonumentNameById(id_image: str):
+	return selectMonumentNameById(id_image)
+
+def clean_string(text):
+	# Passage en minuscule et retrait des accents
+	text = ''.join((c for c in unicodedata.normalize('NFD', text.lower()) if unicodedata.category(c) != 'Mn'))
+	return text.replace("-", "").replace(" ", "").replace("'", "")
 
 
