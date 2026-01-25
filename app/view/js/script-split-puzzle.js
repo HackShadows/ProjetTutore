@@ -45,11 +45,22 @@ async function demarrerJeu() {
 
 	if (url) {
 		try {
-			const tiles = await splitImage(url, puzzlesize, tilesize);
+			let tiles = await splitImage(url, puzzlesize, tilesize);
 			console.log("Pièces générées :", tiles);
+			for (let i = tiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+			console.log("Pièces mélangées :", tiles);
 			for (let i = 0; i < puzzlesize * puzzlesize; i++) {
-				document.getElementById("tile" + i).src = tiles[i]['img'];
-			}
+                const imgElement = document.getElementById("tile" + i);
+                imgElement.src = tiles[i]['img'];
+
+                const randomRotation = Math.floor(Math.random() * 4) * 90;
+                imgElement.style.transform = `rotate(${randomRotation}deg)`;
+
+                // imgElement.dataset.rotation = randomRotation;
+            }
 			console.log("done")
 		} catch (error) {
 			console.error("Problème de génération du puzzle", error);

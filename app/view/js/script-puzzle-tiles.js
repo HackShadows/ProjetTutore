@@ -83,10 +83,14 @@ function getSolution(puzzleTilesElements)
 		let cellIdData = parentCell.id.split("-");
 		let tileRow = parseInt( cellIdData[2] );
 		let tileCol = parseInt( cellIdData[3] );
-		// let tileRot = parseInt( tileElement.firstElementChild.firstElementChild.style.transform.match(/\d+/) );
-		let tileRot = 0;
+		let tileRot = parseInt( tileElement.firstElementChild.firstElementChild.style.transform.match(/\d+/) );
+		// let tileRot = 0;
 		res.push( {"id": tileId, "row": tileRow, "col": tileCol, "rotDeg": tileRot} );
 	}
+	res.sort((a, b) => {
+        if (a.row !== b.row) return a.row - b.row;
+        return a.col - b.col;
+    });
 	console.log(`res : ${res}`);
 	return res;
 }
