@@ -1,4 +1,4 @@
-from models.puzzleModel import save_image_to_db, getImagesUser
+from models.puzzleModel import save_image_to_db, getImagesUser, deleteImageById
 
 def registerImage(nom_image: str, nom_monument: str, description: str, nom_commune: str, longitude: str,
 					 latitude: str, url: str, username: str):
@@ -6,3 +6,6 @@ def registerImage(nom_image: str, nom_monument: str, description: str, nom_commu
 
 def getAllPuzzleFromUser(usename: str):
 	return getImagesUser(usename)
+
+def deleteImage(id: str):
+	return deleteImageById(id)

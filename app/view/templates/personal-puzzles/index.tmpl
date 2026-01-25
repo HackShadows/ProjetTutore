@@ -1,16 +1,59 @@
 {% extends "page.tmpl" %}
-
 {% block nav %}
 	{{ nav_tmpl.nav(nav_items, 2) }}
 {% endblock %}
 
 {% block main %}
 	{% if listImages %}
-		<li>
-			{% for puzzle in listImages %}
-				<ul> {{ puzzle }} </ul>
-			{% endfor %}
-		</li>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover align-middle">
+				<thead class="table-dark">
+				<tr>
+					<th>Nom de l'image</th>
+					<th>Image</th>
+					<th class="text-center">Statut</th>
+					<th class="text-center">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for image in listImages %}
+					<tr>
+						<td>{{ image['nom_image'] }}</td>
+						<td>
+							<img src="{{ image['url'] }}" style="object-fit: cover;width: 150px;height: 150px;">
+						</td>
+						<td class="text-center">
+							{% if image['public'] %}
+								<span class="badge bg-success">Publique</span>
+							{% else %}
+								<span class="badge bg-secondary">Privée</span>
+							{% endif %}
+						</td>
+
+						<td class="text-center">
+							<div class="d-flex justify-content-center gap-2">
+
+								<form action="/supprimerImage" method="POST">
+									<input type="hidden" name="id" value="{{ image['id_image'] }}">
+									<button type="submit" class="btn btn-warning btn-sm" title="id">
+										Supprimer
+									</button>
+								</form>
+
+								<form action="/choisirImage" method="POST">
+									<input type="hidden" name="user_id" value="{{ image_id }}">
+									<button type="submit" class="btn btn-primary btn-sm" title="choisir l'image">
+										Joueur avec cette image
+									</button>
+								</form>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
 	{% else %}
 		<p>Vous n'avez pas encore créé de puzzle.</p>
 	{% endif %}

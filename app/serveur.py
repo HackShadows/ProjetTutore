@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from controllers.connexionController import registerUser, logIn
-from controllers.puzzleController import registerImage, getAllPuzzleFromUser
+from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage
 from models.connexionModel import verify_token
 from models.mapModel import DepartementData
 
@@ -131,3 +131,9 @@ def post_selection_departement(request: Request, data: DepartementData, user_con
 def get_difficulte(request: Request, user_context: str = Depends(get_current_user)):
 	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=user_context)
 
+@app.post("/supprimerImage", response_class=HTMLResponse)
+def post_supprimerImage(request: Request, id: str = Form(...), user_context: str = Depends(get_current_user)):
+	print("entree dans traitementCreationPuzzle")
+	print(f"id de l'image : {id}")
+	deleteImage(id)
+	return RedirectResponse(url="/personal-puzzles", status_code=status.HTTP_303_SEE_OTHER)
