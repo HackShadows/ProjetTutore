@@ -26,7 +26,7 @@ tileContainer.addEventListener("drop", (e) => {
 			targetItem.insertBefore(draggedItem.parentElement.parentElement, targetItem.firstElementChild);
 
 			const solution = getSolution(puzzleTiles);
-			if( solution.length == boardWidth * boardHeight && hashSolution(solution) == puzzleSolutionHash ) {
+			if( solution.length === boardWidth * boardHeight && hashSolution(solution) === puzzleSolutionHash ) {
 				console.log("le puzzle ets fini");
 				puzzleSolved = true;
 			}

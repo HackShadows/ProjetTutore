@@ -14,3 +14,18 @@ def getImageDept(dept_id: str):
 
 def getImageById(image_id: str):
 	return selectImageById(image_id)
+
+def getHashSolution(tiles):
+	print(tiles)
+	res = 0
+	for tile in tiles:
+		res += tile['x']
+		res *= 37
+		res += tile['y']
+		res *= 37
+		res += tile['rotation']
+		res *= 37
+	print(res)
+	return res
+
+

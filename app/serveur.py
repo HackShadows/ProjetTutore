@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 import shutil
 
 from controllers.connexionController import registerUser, logIn
-from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept, getImageById
+from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept, getImageById, getHashSolution
 from models.connexionModel import verify_token, update_user_profile_pic
 from models.mapModel import DepartementData
 from models.puzzleModel import get_department_info
@@ -108,33 +108,35 @@ def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 
 @app.get("/play/official-puzzle", response_class=HTMLResponse)
 def get_official_puzzle(request: Request, image_id: int = None, size: int = 4, user_context: dict = Depends(get_current_user)):
-    
-    if image_id is None:
-        print("Accès direct au puzzle sans image : redirection vers la carte.")
-        return RedirectResponse(url="/map", status_code=status.HTTP_303_SEE_OTHER)
-    
-    image = getImageById(image_id)
 
-    tiles = []
-    for i in range(size * size):
-        tiles.append({
-            "id": i,
-            "x": i % size,
-            "y": i // size,
-            "rotation": 0
-        })
+	if image_id is None:
+		print("Accès direct au puzzle sans image : redirection vers la carte.")
+		return RedirectResponse(url="/map", status_code=status.HTTP_303_SEE_OTHER)
 
-    context = {
-        "image": image,
-        "board_size": size,
-        "puzzle_tiles": tiles
-    }
-    
-    return templates.TemplateResponse(
-        name="play/official-puzzle.tmpl", 
-        request=request, 
-        context=context | user_context
-    )
+	image = getImageById(image_id)
+
+	tiles = []
+	for i in range(size * size):
+		tiles.append({
+			"id": i,
+			"x": i % size,
+			"y": i // size,
+			"rotation": 0
+		})
+	hashSolution = getHashSolution(tiles)
+	context = {
+		"image": image,
+		"board_width": size,
+		"board_height": size,
+		"puzzle_tiles": tiles,
+		"solution_hash": hashSolution
+	}
+
+	return templates.TemplateResponse(
+		name="play/official-puzzle.tmpl",
+		request=request,
+		context=context | user_context
+	)
 
 @app.get("/play/personal-puzzle", response_class=HTMLResponse)
 def get_root(request :Request, user_context: str = Depends(get_current_user)) :
@@ -165,23 +167,23 @@ def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str 
 
 @app.post("/upload-profile-pic")
 async def upload_profile_pic(request: Request, file_image: UploadFile = File(...), user_context: dict = Depends(get_current_user)):
-    username = user_context.get("user_name")
-    if not username:
-        return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
-    
-    file_location = f"view/img/{file_image.filename}"
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file_image.file, buffer)
-    
-    url_image = f"/static/img/{file_image.filename}"
-    
-    success, result = registerImage(nom_image=f"Profil_{username}", url=url_image, username=username)
-    
-    if success:
-        img_data = getImageById(result)
-        update_user_profile_pic(username, result)
-        
-    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+	username = user_context.get("user_name")
+	if not username:
+		return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
+
+	file_location = f"view/img/{file_image.filename}"
+	with open(file_location, "wb") as buffer:
+		shutil.copyfileobj(file_image.file, buffer)
+
+	url_image = f"/static/img/{file_image.filename}"
+
+	success, result = registerImage(nom_image=f"Profil_{username}", url=url_image, username=username)
+
+	if success:
+		img_data = getImageById(result)
+		update_user_profile_pic(username, result)
+
+	return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/selectionDepartement")
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
@@ -191,15 +193,15 @@ def post_selection_departement(request: Request, data: DepartementData, user_con
 
 @app.get("/difficulte", response_class=HTMLResponse)
 def get_difficulte(request: Request, number: str, user_context: dict = Depends(get_current_user)):
-    image = getImageDept(number)
-    nom_dept = get_department_info(number)
-    
-    context = {
-        "image": image, 
-        "departement_num": number, 
-        "departement_nom": nom_dept
-    }
-    return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=context | user_context)
+	image = getImageDept(number)
+	nom_dept = get_department_info(number)
+
+	context = {
+		"image": image,
+		"departement_num": number,
+		"departement_nom": nom_dept
+	}
+	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=context | user_context)
 
 @app.post("/supprimerImage", response_class=HTMLResponse)
 def post_supprimerImage(request: Request, id: str = Form(...), user_context: str = Depends(get_current_user)):

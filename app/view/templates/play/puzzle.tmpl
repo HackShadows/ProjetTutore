@@ -59,9 +59,9 @@
 	<div class="puzzle-board">
 
 		{% for row in range(board_width) %}
-		<div class="puzzle-row" id="puzzle-row-{{ row+1 }}">
+		<div class="puzzle-row" id="puzzle-row-{{ row + 1 }}">
 			{% for col in range(board_height) %}
-			<div class="puzzle-cell" id="puzzle-cell-{{ row+1 }}-{{ col+1 }}">
+			<div class="puzzle-cell" id="puzzle-cell-{{ row + 1 }}-{{ col + 1 }}">
 			</div>
 			{% endfor %}
 		</div>
@@ -70,9 +70,9 @@
 	</div>
 	<script src="/static/js/script-split-puzzle.js" defer></script>
 	<input id="imageurl" type="hidden" value="{{ image.url }}">
-	<input id="imagsize" type="hidden" value="{{ board_size }}">
-	<input id ="cellsize" type ="hidden" value="{{ 50 / board_size }}">
-	{% for i in range (board_size*board_size) %}
+	<input id="imagsize" type="hidden" value="{{ board_width }}">
+	<input id ="cellsize" type ="hidden" value="{{ 50 / board_width }}">
+	{% for i in range (board_width * board_height) %}
 	<div class="puzzle-tile" draggable="true">
 		<div class="puzzle-image-container">
 			<img id="{{ i }}"></img>
