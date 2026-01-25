@@ -55,3 +55,17 @@ def selectImageById(id: str):
 	image = select('image', where=f"id_image={id}")
 	return image[0] if image else None
 
+def get_department_info(dept_code: str):
+    """Récupère le nom du département dans la table Lieu."""
+    conn, cursor = get_cursor()
+    try:
+        query = sql.SQL("SELECT nom_dept FROM Lieu WHERE code_dept = {code} LIMIT 1").format(code=sql.Literal(dept_code))
+        cursor.execute(query)
+        result = cursor.fetchone()
+        
+        if result:
+            return result['nom_dept']
+        return "Inconnu"
+    except Exception as e:
+        print(f"Erreur SQL get_department_info : {e}")
+        return "Inconnu"

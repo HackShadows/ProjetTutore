@@ -1,17 +1,40 @@
 {% extends "page.tmpl" %}
 
-{% block nav %}
-	{% set nav_items = nav_items + [
-	{"target": "/difficulte", "text": "Création Partie"}] %}
-	{{ nav_tmpl.nav(nav_items, 7) }}
-{% endblock %}
-
 {% block main %}
-	{% if departement %}
-		<p> Selection de la difficulté pour le département {{ departement }}</p>
-	{% endif %}
-	<p>
-		Voici l'image séléctionnée : {{ image }}
-	</p>
-	<img src="{{ image['url'] }}" style="object-fit: cover;width: 300px;height: 300px;">
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h2 class="mb-4">Configuration de la partie</h2>
+        
+        {% if departement_num %}
+            <p class="lead">
+                Selection de la difficulté pour le département : 
+                <strong>{{ departement_nom }} ({{ departement_num }})</strong>
+            </p>
+        {% endif %}
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <img src="{{ image['url'] }}" class="img-fluid rounded border mb-3" style="max-height: 350px;">
+                <h5 class="card-title">{{ image['nom_monument'] if image['nom_monument'] else "Monument sélectionné" }}</h5>
+            </div>
+        </div>
+
+        <div class="card border-primary">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Choisissez la difficulté</h4>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=3" class="btn btn-success btn-lg">
+                        Facile (3x3)
+                    </a>
+                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=4" class="btn btn-warning btn-lg">
+                        Moyen (4x4)
+                    </a>
+                    <a href="/play/official-puzzle?image_id={{ image.id_image }}&size=5" class="btn btn-danger btn-lg">
+                        Difficile (5x5)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

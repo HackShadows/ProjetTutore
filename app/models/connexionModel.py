@@ -86,4 +86,18 @@ def get_hashed_password(username):
     return request[0]['hashcode'] if request else None
 
 
+def update_user_profile_pic(username: str, image_id: int):
+    conn, cursor = get_cursor()
+    try:
+        query = sql.SQL("UPDATE Utilisateur SET id_image = {img_id} WHERE pseudo = {name}").format(
+            img_id=sql.Literal(image_id),
+            name=sql.Literal(username)
+        )
+        cursor.execute(query)
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Erreur mise à jour profil : {e}")
+        return False
+
 pass
