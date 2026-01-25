@@ -9,7 +9,7 @@
 {% set board_width_vw = 50 %}
 {% set board_height_vw = board_width_vw * board_height / board_width %}
 {% set cell_size_vw = board_width_vw / board_width %}
-{% set cell_overflow_vw = cell_size_vw * 0.375 %}
+{% set cell_overflow_vw = cell_size_vw * 0.75 %}
 
 #tile-container {
 	display: flex;
@@ -35,10 +35,10 @@
 }
 .puzzle-image-container {
 	position: absolute;
-	left:   -{{cell_overflow_vw}}vw;
-	right:  -{{cell_overflow_vw}}vw;
-	top:    -{{cell_overflow_vw}}vw;
-	bottom: -{{cell_overflow_vw}}vw;
+	left:   {{-cell_overflow_vw/2}}vw;
+	right:  {{-cell_overflow_vw/2}}vw;
+	top:    {{-cell_overflow_vw/2}}vw;
+	bottom: {{-cell_overflow_vw/2}}vw;
 	z-index: 1;
 }
 </style>
