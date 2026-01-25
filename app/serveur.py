@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from controllers.connexionController import registerUser, logIn
-from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage
+from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept
 from models.connexionModel import verify_token
 from models.mapModel import DepartementData
 
@@ -125,6 +125,7 @@ def post_creation_puzzle(request: Request, nom_image: str = Form(...), nom_monum
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
 	print("entree dans traitementCreationPuzzle")
 	print(f"Numéro du departement {data.number}")
+	allImages = getImageDept(data.number)
 	return {"redirect_url": "/difficulte"}
 
 @app.get("/difficulte", response_class=HTMLResponse)

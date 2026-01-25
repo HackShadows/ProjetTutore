@@ -1,3 +1,5 @@
+import sqlite3
+
 from .connexion import *
 
 def SelectAll(query, params=None):
@@ -97,7 +99,7 @@ def select(nomTable, attributs="*", limit=None, where="", orderby=None, desc=Fal
 		attributs = sql.SQL(', ').join(
 			[sql.Identifier(attr) for attr in attributs])
 	if limit:
-		limit = sql.SQL('LIMIT {limit}').format(limit=limit)
+		limit = sql.SQL('LIMIT {l}').format(l=sql.Literal(limit))
 	else:
 		limit = sql.SQL('')
 	if where != "":

@@ -1,5 +1,6 @@
 from .executequerries import select, execute_other_query, get_cursor
 from psycopg2 import sql
+from random import randint
 
 
 def save_image_to_db(nom_image: str, nom_monument: str, description: str, nom_commune: str, longitude: str,
@@ -49,4 +50,13 @@ def deleteImageById(id: str):
 	except Exception as e:
 		print(f"Erreur de bd : {e}")
 		return False, e
+
+
+def selectImageByDept(id: str):
+	allImages = select('image', where=f"code_dept='{str(id)}'", join='lieu', using='nom_commune')
+	print(allImages)
+	randomIndex = randint(0, len(allImages))
+	print(randomIndex)
+	print(allImages[randomIndex])
+	return allImages[randomIndex]
 
