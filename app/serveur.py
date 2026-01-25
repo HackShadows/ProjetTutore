@@ -64,7 +64,6 @@ def get_root(request: Request, user_context: str = Depends(get_current_user)):
 
 @app.get("/connexion", response_class=HTMLResponse)
 def get_root(request: Request, user_context: str = Depends(get_current_user)):
-	print(request)
 	return templates.TemplateResponse(name="connexion.tmpl", request=request, context={'data': False} | user_context)
 
 
@@ -77,7 +76,6 @@ def get_root(request: Request, user_context: str = Depends(get_current_user)):
 def post_inscription(request: Request, username: str = Form(...), password: str = Form(...),
 					 confirm_password: str = Form(...), user_context: str = Depends(get_current_user)):
 	success, message = registerUser(username, password, confirm_password)
-	print(f"succes : {success}, message : {message}")
 	if success:
 		return RedirectResponse(url="/connexion", status_code=status.HTTP_303_SEE_OTHER)
 	else:
@@ -88,9 +86,7 @@ def post_inscription(request: Request, username: str = Form(...), password: str 
 @app.post("/traitementConnexion", response_class=HTMLResponse)
 def post_connexion(request: Request, username: str = Form(...), password: str = Form(...),
 				   user_context: str = Depends(get_current_user)):
-	print("entree dans post_connexion")
 	success, result = logIn(username, password)  # result est soit le message d'erreur soit le token
-	print(f"succes : {success}, result : {result}")
 	if success:
 		token = result
 		response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
@@ -190,8 +186,6 @@ def get_personal_puzzle(request: Request, image_id: int = None, size: int = 4,
 def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str = Form(None),
 						 file_image: UploadFile = File(None),
 						 user_context: str = Depends(get_current_user)):
-	print("entree dans traitementCreationPuzzle")
-	print(f"file_image : {file_image}")
 	if file_image.filename != '':
 		upload_dir = "view/img/user_images"
 		os.makedirs(upload_dir, exist_ok=True)
@@ -237,8 +231,6 @@ async def upload_profile_pic(request: Request, file_image: UploadFile = File(...
 
 @app.post("/selectionDepartement")
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
-	print("entree dans traitementCreationPuzzle")
-	print(f"Numéro du departement {data.number}")
 	return {"redirect_url": f"/difficulte?number={data.number}"}
 
 
@@ -261,8 +253,6 @@ def get_difficulte(request: Request, number: str = None, user_context: dict = De
 
 @app.post("/supprimerImage", response_class=HTMLResponse)
 def post_supprimerImage(request: Request, id: str = Form(...), user_context: str = Depends(get_current_user)):
-	print("entree dans traitementCreationPuzzle")
-	print(f"id de l'image : {id}")
 	deleteImage(id)
 	return RedirectResponse(url="/personal-puzzles", status_code=status.HTTP_303_SEE_OTHER)
 

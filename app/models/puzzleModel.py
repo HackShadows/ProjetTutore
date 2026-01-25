@@ -4,7 +4,6 @@ from random import randint
 
 
 def save_image_to_db(nom_image: str, url: str, username: str):
-	print("entree dans save image to db")
 	conn, cursor = get_cursor()
 	try:
 		requestUserId = select("utilisateur", 'id_utilisateur', where=f"pseudo='{username}'")
@@ -17,7 +16,6 @@ def save_image_to_db(nom_image: str, url: str, username: str):
 			ni=sql.Literal(nom_image),
 			u=sql.Literal(url),
 			id=sql.Literal(userId))
-		print("saveimagetodb : query bien crée")
 		cursor.execute(query)
 		conn.commit()
 		return True, ""
@@ -33,11 +31,9 @@ def getImagesUser(username: str):
 				  where=f"pseudo='{username}'", join="utilisateur", using="id_utilisateur")
 
 def deleteImageById(id: str):
-	print("entree dans save image to db")
 	conn, cursor = get_cursor()
 	try:
 		query = sql.SQL("DELETE FROM image WHERE id_image={id}").format(id=sql.Literal(id))
-		print("deleteImagetodb : query bien crée")
 		cursor.execute(query)
 		conn.commit()
 		return True, ""
