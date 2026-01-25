@@ -26,6 +26,7 @@ tileContainer.addEventListener("drop", (e) => {
 			targetItem.insertBefore(draggedItem.parentElement.parentElement, targetItem.firstElementChild);
 
 			const solution = getSolution(puzzleTiles);
+			console.log(`solution : ${solution}`);
 			if( solution.length === boardWidth * boardHeight && hashSolution(solution) === puzzleSolutionHash ) {
 				console.log("le puzzle ets fini");
 				puzzleSolved = true;
@@ -77,10 +78,12 @@ function getSolution(puzzleTilesElements)
 		let cellIdData = parentCell.id.split("-");
 		let tileRow = parseInt( cellIdData[2] );
 		let tileCol = parseInt( cellIdData[3] );
-		let tileRot = parseInt( tileElement.firstElementChild.firstElementChild.style.transform.match(/\d+/) );
-
+		// let tileRot = parseInt( tileElement.firstElementChild.firstElementChild.style.transform.match(/\d+/) );
+		let tileRot = 0;
 		res.push( {"id": tileId, "row": tileRow, "col": tileCol, "rotDeg": tileRot} );
 	}
+	console.log(`res : ${res}`);
+	return res;
 }
 
 // prend une solution de la forme [{"id": 0, "row": a, "col": b, "rotDeg": c}, ...] et retourne (((a*37 + b)*37 + c)*37 + ...)
@@ -88,12 +91,14 @@ function getSolution(puzzleTilesElements)
 function hashSolution(solution){
 	let res = 0;
 	for( const tileConfig of solution ){
+		console.log(`tileConfig : ${JSON.stringify(tileConfig, null, 4)}`);
 		res += tileConfig.row;
-		res *= 37;
+		res *= 7;
 		res += tileConfig.col;
-		res *= 37;
+		res *= 7;
 		res += tileConfig.rotDeg;
-		res *= 37;
+		res *= 7;
+		console.log(`res : ${res}`);
 	}
 	return res;
 }

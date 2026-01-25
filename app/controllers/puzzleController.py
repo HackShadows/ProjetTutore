@@ -19,12 +19,12 @@ def getHashSolution(tiles):
 	print(tiles)
 	res = 0
 	for tile in tiles:
-		res += tile['x']
-		res *= 37
-		res += tile['y']
-		res *= 37
+		res += tile['y'] + 1
+		res *= 7
+		res += tile['x'] + 1
+		res *= 7
 		res += tile['rotation']
-		res *= 37
+		res *= 7
 	print(res)
 	return res
 
