@@ -111,11 +111,9 @@ def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=user_context | puzzle_context)
 
 @app.post("/traitementCreationPuzzle", response_class=HTMLResponse)
-def post_creation_puzzle(request: Request, nom_image: str = Form(...), nom_monument: str=Form(...),
-		description: str = Form(...), nom_commune: str=Form(...), longitude: str = Form(...), latitude: str=Form(...),
-		url: str = Form(...), user_context: str = Depends(get_current_user)):
+def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str = Form(...), user_context: str = Depends(get_current_user)):
 	print("entree dans traitementCreationPuzzle")
-	success, message = registerImage(nom_image, nom_monument, description, nom_commune, longitude, latitude, url, user_context['user_name'])
+	success, message = registerImage(nom_image, url, user_context['user_name'])
 	if success:
 		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context=user_context)
 	else:

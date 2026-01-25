@@ -3,8 +3,7 @@ from psycopg2 import sql
 from random import randint
 
 
-def save_image_to_db(nom_image: str, nom_monument: str, description: str, nom_commune: str, longitude: str,
-					 latitude: str, url: str, username: str):
+def save_image_to_db(nom_image: str, url: str, username: str):
 	print("entree dans save image to db")
 	conn, cursor = get_cursor()
 	try:
@@ -14,14 +13,9 @@ def save_image_to_db(nom_image: str, nom_monument: str, description: str, nom_co
 		else:
 			return
 		query = sql.SQL('INSERT INTO image(nom_image, nom_monument, description, nom_commune, url, geoloc, public, id_utilisateur) '
-						'VALUES ({ni}, {nm}, {d}, {nc}, {u}, {g}, FALSE, {id}) RETURNING id_utilisateur').format(
+						'VALUES ({ni}, null, null, null, {u}, null, FALSE, {id})').format(
 			ni=sql.Literal(nom_image),
-			nm=sql.Literal(nom_monument),
-			d=sql.Literal(description),
-			# nc=sql.Literal(nom_commune),
-			nc=sql.NULL, # todo ajouter lieu si il existe pas
 			u=sql.Literal(url),
-			g=sql.Literal(str(longitude) + ', ' + str(latitude)),
 			id=sql.Literal(userId))
 		print("saveimagetodb : query bien crée")
 		cursor.execute(query)
