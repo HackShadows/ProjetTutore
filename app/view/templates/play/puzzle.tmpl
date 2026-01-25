@@ -14,8 +14,8 @@
 #tile-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: {{ 2*cell_overflow_vw }}vw;
-	padding: {{ cell_overflow_vw }}vw;
+	{#gap: {{ 2*cell_overflow_vw }}vw;#}
+	{#padding: {{ cell_overflow_vw }}vw;#}
 }
 .puzzle-board {
 	width:  {{board_width_vw}}vw;
@@ -35,16 +35,14 @@
 }
 .puzzle-tile img {
 	width: 100%;
+	height: 100%;
 	object-fit: cover;
 }
 
-.puzzle-image-container {
-	position: absolute;
-	left:   {{-cell_overflow_vw/2}}vw;
-	right:  {{-cell_overflow_vw/2}}vw;
-	top:    {{-cell_overflow_vw/2}}vw;
-	bottom: {{-cell_overflow_vw/2}}vw;
-	z-index: 1;
+.puzzle-image-container img {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 </style>
 
