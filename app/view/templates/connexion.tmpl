@@ -1,32 +1,50 @@
 {% extends "page.tmpl" %}
 
 {% block nav %}
-{% set nav_items = nav_items + [
-	{"target": "/connexion", "text": "Connexion"}] %}
+{% set nav_items = nav_items + [{"target": "/connexion", "text": "Connexion"}] %}
 {{ nav_tmpl.nav(nav_items, 7) }}
 {% endblock %}
 
 {% block main %}
-	{% if not user_name %}
-		<h1 class="title" id="contactFormTitle">Se connecter</h1>
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            {% if not user_name %}
+                <h1 class="title mb-4" id="contactFormTitle">Se connecter</h1>
 
-		<form action="/traitementConnexion" id="contactForm" method="POST">
+				{% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Erreur :</strong> {{ error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
 
-		<label for="username">Pseudo :</label>
-		<input type="text" id="username" name="username" value="{{ data.username }}" required>
+                <form action="/traitementConnexion" id="contactForm" method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Pseudo :</label>
+                        <input type="text" id="username" name="username" class="form-control" value="{{ data.username }}" required>
+                    </div>
 
-		<label for="password">Mot de passe :</label>
-		<input type="password" name="password" id="password" required>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe :</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
 
-		<button type="submit" class="btn btn-primary">Se connecter</button>
+                    <button type="submit" class="btn btn-primary px-4">Se connecter</button>
+                </form>
 
-		</form>
-		<div class="mt-1">
-			Pas encore de compte ? <a href="/inscription"><button class="btn btn-primary">S'inscrire</button></a>
-		</div>
-	{% else %}
-		<form action="/deconnexion"  method="GET">
-		<button type="submit" class="btn btn-primary">Se déconnecter</button>
-		</form>
-	{% endif %}
+                <div class="mt-4 pt-3 border-top">
+                    Pas encore de compte ? 
+                    <a href="/inscription">
+                        <button class="btn btn-primary ms-2">S'inscrire</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="py-4">
+                    <form action="/deconnexion" method="GET">
+                        <button type="submit" class="btn btn-primary">Se déconnecter</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
