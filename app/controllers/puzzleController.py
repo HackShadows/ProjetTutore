@@ -15,16 +15,16 @@ def getImageDept(dept_id: str):
 def getImageById(image_id: str):
 	return selectImageById(image_id)
 
-def getHashSolution(tiles):
+def getHashSolution(tiles, size):
 	print(tiles)
-	res = 0
+	print(size)
+	res = ""
+	offset = 13
+	char = 0
 	for tile in tiles:
-		res += tile['y'] + 1
-		res *= 7
-		res += tile['x'] + 1
-		res *= 7
-		res += tile['rotation']
-		res *= 7
+		char = (tile['y'] + 1 ) * size + tile['x'] + 1 + tile['rotation']
+		print(char)
+		res += chr(char + offset)
 	print(res)
 	return res
 

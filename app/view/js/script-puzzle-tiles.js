@@ -3,7 +3,7 @@ let draggedItem = null;
 
 const boardWidth = parseInt( document.getElementById("board-width").innerText );
 const boardHeight = parseInt( document.getElementById("board-height").innerText );
-const puzzleSolutionHash = parseInt( document.getElementById("solution-hash").innerText);
+const puzzleSolutionHash =  document.getElementById("solution-hash").innerText;
 
 let puzzleSolved = false;
 
@@ -27,8 +27,8 @@ tileContainer.addEventListener("drop", (e) => {
 
 			const solution = getSolution(puzzleTiles);
 			console.log(`solution : ${solution}`);
-			if( solution.length === boardWidth * boardHeight && hashSolution(solution) === puzzleSolutionHash ) {
-				console.log("le puzzle ets fini");
+			if( solution.length === boardWidth * boardHeight && hashSolution(solution, boardWidth) === puzzleSolutionHash ) {
+				console.log("le puzzle est fini");
 				puzzleSolved = true;
 			}
 		}
@@ -88,16 +88,16 @@ function getSolution(puzzleTilesElements)
 
 // prend une solution de la forme [{"id": 0, "row": a, "col": b, "rotDeg": c}, ...] et retourne (((a*37 + b)*37 + c)*37 + ...)
 // DOIT ETRE FONCTIONNELLEMENT IDENTIQUE A LA FONCTION HASH DU SERVEUR
-function hashSolution(solution){
-	let res = 0;
+function hashSolution(solution, size){
+	const offset = 13;
+	console.log(`size : ${size}`);
+	let res = "";
+	let char = 0;
 	for( const tileConfig of solution ){
 		console.log(`tileConfig : ${JSON.stringify(tileConfig, null, 4)}`);
-		res += tileConfig.row;
-		res *= 7;
-		res += tileConfig.col;
-		res *= 7;
-		res += tileConfig.rotDeg;
-		res *= 7;
+		char = tileConfig.row * size + tileConfig.col + tileConfig.rotDeg;
+		res += String.fromCharCode(char + offset);
+		console.log(`char : ${char}`);
 		console.log(`res : ${res}`);
 	}
 	return res;

@@ -123,7 +123,7 @@ def get_official_puzzle(request: Request, image_id: int = None, size: int = 4, u
 			"y": i // size,
 			"rotation": 0
 		})
-	hashSolution = getHashSolution(tiles)
+	hashSolution = getHashSolution(tiles, size)
 	context = {
 		"image": image,
 		"board_width": size,
