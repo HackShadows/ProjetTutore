@@ -80,7 +80,7 @@
 	{% for i in range (board_width * board_height) %}
 	<div class="puzzle-tile" draggable="true">
 		<div class="puzzle-image-container">
-			<img id="tile{{ i }}"></img>
+			<img id="tile{{ i }}" style="transform: rotate(0deg)"></img>
 		</div>
 	</div>
 	{% endfor %}
