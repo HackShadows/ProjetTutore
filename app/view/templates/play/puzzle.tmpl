@@ -33,6 +33,11 @@
 	width: {{cell_size_vw}}vw;
 	height: {{cell_size_vw}}vw;
 }
+.puzzle-tile img {
+	width: 100%;
+	object-fit: cover;
+}
+
 .puzzle-image-container {
 	position: absolute;
 	left:   {{-cell_overflow_vw/2}}vw;
@@ -53,7 +58,7 @@
 <span display="none" id="board-width">{{ board_width }}</span>
 <span display="none" id="board-height">{{ board_height }}</span>
 <span display="none" id="solution-hash">{{ solution_hash }}</span>
-
+	<img src="{{ image['url'] }}">
 <p class="puzzle-hint">Vous pouvez déplacer les pièces en "drag and drop", et les tourner avec un double-clic</p>
 <div id="tile-container">
 	<div class="puzzle-board">
@@ -69,13 +74,13 @@
 		
 	</div>
 	<script src="/static/js/script-split-puzzle.js" defer></script>
-	<input id="imageurl" type="hidden" value="{{ image.url }}">
-	<input id="imagsize" type="hidden" value="{{ board_width }}">
+	<input id="imageurl" type="hidden" value="{{ image['url'] }}">
+	<input id="imagesize" type="hidden" value="{{ board_width }}">
 	<input id ="cellsize" type ="hidden" value="{{ 50 / board_width }}">
 	{% for i in range (board_width * board_height) %}
 	<div class="puzzle-tile" draggable="true">
 		<div class="puzzle-image-container">
-			<img id="{{ i }}"></img>
+			<img id="tile{{ i }}"></img>
 		</div>
 	</div>
 	{% endfor %}
