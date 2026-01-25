@@ -5,14 +5,22 @@
 {% endblock %}
 
 {% block main %}
-	Page de création de puzzle.
-	<form action="/traitementCreationPuzzle" method="post">
+	<h3>Page de création de puzzle.</h3>
+	{% if message %}
+	<h3>{{ message }}</h3>
+	{% endif %}
+	{% if erreur %}
+	<h3 style="color: red">{{ erreur }}</h3>
+	{% endif %}
+	<form action="/traitementCreationPuzzle" method="post" enctype="multipart/form-data">
 		<label for="nom_image">Nom de l'image</label>
 		<input type="text" id="nom_image" name="nom_image" required>
 
 		<label for="url">URL de l'image</label>
-		<input type="url" id="url" name="url" required>
+		<input type="url" id="url" name="url">
 
+		<label for="file_image">Choisir un fichier</label>
+		<input type="file" accept="image/*" id="file_image" name="file_image">
 
 		<button type="submit" class="btn btn-primary">Valider</button>
 

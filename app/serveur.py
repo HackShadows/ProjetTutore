@@ -1,7 +1,10 @@
-from fastapi import FastAPI, Request, Form, status, Cookie, Depends
+import os
+
+from fastapi import FastAPI, Request, Form, status, Cookie, Depends, File, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import shutil
 
 from controllers.connexionController import registerUser, logIn
 from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept, getImageById
@@ -111,13 +114,26 @@ def get_root(request :Request, user_context: str = Depends(get_current_user)) :
 	return templates.TemplateResponse(name="play/personal-puzzle.tmpl", request=request, context=user_context | puzzle_context)
 
 @app.post("/traitementCreationPuzzle", response_class=HTMLResponse)
-def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str = Form(...), user_context: str = Depends(get_current_user)):
+def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str = Form(None), file_image: UploadFile = File(None),
+						 user_context: str = Depends(get_current_user)):
 	print("entree dans traitementCreationPuzzle")
-	success, message = registerImage(nom_image, url, user_context['user_name'])
-	if success:
-		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context=user_context)
+	print(f"file_image : {file_image}")
+	if file_image.filename != '':
+		upload_dir = "view/img/user_images"
+		os.makedirs(upload_dir, exist_ok=True)
+		file_path = f"{upload_dir}/{file_image.filename}"
+		with open(file_path, "wb") as buffer:
+			shutil.copyfileobj(file_image.file, buffer)
+		generated_url = f"/static/img/user_images/{file_image.filename}"
+		success, message = registerImage(nom_image, generated_url, user_context['user_name'])
+	elif url:
+		success, message = registerImage(nom_image, url, user_context['user_name'])
 	else:
-		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context={'error': message} | user_context)
+		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context={'erreur': "Les champs url et file ne sont pas remplis"} | user_context)
+	if success:
+		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context={'message': "L'image a bien été crée"} | user_context)
+	else:
+		return templates.TemplateResponse(name="personal-puzzles/create-puzzle.tmpl", request=request, context={'erreur': message} | user_context)
 
 @app.post("/selectionDepartement")
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
