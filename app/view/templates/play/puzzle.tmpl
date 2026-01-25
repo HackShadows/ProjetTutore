@@ -68,11 +68,14 @@
 		{% endfor %}
 		
 	</div>
-
-	{% for tile in puzzle_tiles %}
-	<div class="puzzle-tile" id="puzzle-tile-{{ tile.id }}" draggable="true">
+	<script src="/static/js/script-split-puzzle.js" defer></script>
+	<input id="imageurl" type="hidden" value="{{ image.url }}">
+	<input id="imagsize" type="hidden" value="{{ board_size }}">
+	<input id ="cellsize" type ="hidden" value="{{ 50 / board_size }}">
+	{% for i in range (board_size*board_size) %}
+	<div class="puzzle-tile" draggable="true">
 		<div class="puzzle-image-container">
-			<img src="{{ tile.img }}" style="transform: rotate(0deg)"></img>
+			<img id="{{ i }}"></img>
 		</div>
 	</div>
 	{% endfor %}
