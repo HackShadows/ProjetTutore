@@ -1,0 +1,20 @@
+{% extends "page.tmpl" %}
+{% set nav_current = 4 %}
+
+{% block nav %}
+	{% set nav_items = nav_items + [{"target": "/victoire?image_id="~image['id_image'], "text": "Victoire"}] %}
+	{{ nav_tmpl.nav(nav_items, 4) }}
+{% endblock %}
+
+{% block main %}
+	<h1> Bravo, vous avez rempli le puzzle</h1>
+	{% if image['public'] %}
+	<form action="/play/official-puzzle" id="monument-guess-form" method="POST">
+		<input type="text" id="monument" name="monument" placeholder="Nom du monument" required>
+		<button type="submit" class="btn btn-primary">C'est ce monument !</button>
+	</form>
+	{% endif %}
+
+	<img src="{{ image['url'] }}">
+
+{% endblock %}
