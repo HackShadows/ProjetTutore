@@ -48,7 +48,6 @@ def deleteImageById(id: str):
 
 def selectImageByDept(id: str):
 	allImages = select('image', where=f"code_dept='{str(id)}'", join='lieu', using='nom_commune')
-	print(allImages)
 	randomIndex = randint(0, len(allImages))
 	print(randomIndex)
 	print(allImages[randomIndex])

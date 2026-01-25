@@ -123,12 +123,14 @@ def post_creation_puzzle(request: Request, nom_image: str = Form(...), url: str 
 def post_selection_departement(request: Request, data: DepartementData, user_context: str = Depends(get_current_user)):
 	print("entree dans traitementCreationPuzzle")
 	print(f"Numéro du departement {data.number}")
-	allImages = getImageDept(data.number)
-	return {"redirect_url": "/difficulte"}
+	return {"redirect_url": f"/difficulte?number={data.number}"}
 
 @app.get("/difficulte", response_class=HTMLResponse)
-def get_difficulte(request: Request, user_context: str = Depends(get_current_user)):
-	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context=user_context)
+def get_difficulte(request: Request, number: str, user_context: str = Depends(get_current_user)):
+	print("entree dans getDifficulte")
+	print(f"Chargement de la page pour le departement {number}")
+	image = getImageDept(number)
+	return templates.TemplateResponse(name="difficulte.tmpl", request=request, context={"image": image, "departement": number	} |user_context)
 
 @app.post("/supprimerImage", response_class=HTMLResponse)
 def post_supprimerImage(request: Request, id: str = Form(...), user_context: str = Depends(get_current_user)):

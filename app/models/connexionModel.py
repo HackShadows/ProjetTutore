@@ -8,7 +8,7 @@ import os
 
 # Configuration JWT
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 
 def create_access_token(data: dict):
@@ -87,5 +87,3 @@ def get_hashed_password(username):
 
 
 pass
-
-'2adf20eff5486112aa2e7ebdd8fe71fe71d6e6004821285aaab76a30418fc657'
