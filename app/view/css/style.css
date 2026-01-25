@@ -6,6 +6,14 @@ nav {
 	flex-basis: 12em;
 }
 
+footer {
+    letter-spacing: 0.02em;
+}
+
+footer .text-primary {
+    color: #0d6efd !important;
+}
+
 a.active {
 	background-color: color(from var(--bs-primary) srgb r g b / 15%);
 }
