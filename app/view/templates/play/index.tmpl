@@ -1,10 +1,6 @@
 {% extends "page.tmpl" %}
 {% set nav_current = 3 %}
 
-{% block nav %}
-    {{ nav_tmpl.nav(nav_items, 3) }}
-{% endblock %}
-
 {% block main %}
 <a href="/play/official-puzzle"><button class="btn btn-primary">Jouer à un puzzle officiel</button></a>
 <a href="/play/personal-puzzle"><button class="btn btn-primary">Jouer à un puzzle personnel</button></a>

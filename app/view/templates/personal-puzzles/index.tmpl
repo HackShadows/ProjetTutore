@@ -1,10 +1,6 @@
 {% extends "page.tmpl" %}
 {% set nav_current = 2 %}
 
-{% block nav %}
-	{{ nav_tmpl.nav(nav_items, 2) }}
-{% endblock %}
-
 {% block main %}
 	{% if listImages %}
 		<div class="table-responsive">

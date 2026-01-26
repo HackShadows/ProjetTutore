@@ -1,0 +1,142 @@
+{% extends "page.tmpl" %}
+
+{% block css %}
+<style>
+    {% set board_width_vw = 45 %}
+    {% set board_height_vw = board_width_vw * board_height / board_width %}
+    {% set cell_size_vw = board_width_vw / board_width %}
+
+    /* Zone principale du jeu */
+    .game-container {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Plateau de jeu */
+    .puzzle-board {
+        width: {{board_width_vw}}vw;
+        height: {{board_height_vw}}vw;
+        background-color: #e9ecef;
+        border: 3px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .puzzle-row {
+        display: flex;
+        width: 100%;
+        height: {{cell_size_vw}}vw;
+    }
+
+    .puzzle-cell {
+        width: {{cell_size_vw}}vw;
+        height: {{cell_size_vw}}vw;
+        border: 1px dashed #ced4da;
+    }
+
+    /* Pièces (Tuiles) */
+    .piece-bank {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        max-width: 350px;
+        min-height: 300px;
+    }
+
+    .puzzle-tile {
+        width: {{cell_size_vw}}vw;
+        height: {{cell_size_vw}}vw;
+        cursor: grab;
+        transition: transform 0.2s, box-shadow 0.2s;
+        z-index: 100;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .puzzle-tile:active { cursor: grabbing; }
+
+    .puzzle-tile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .puzzle-hint {
+        background: #fff3cd;
+        color: #856404;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border-left: 5px solid #ffeeba;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">{% block puzzle_title %}Puzzle{% endblock %}</h2>
+            <p class="text-muted">Assemblez les pièces pour découvrir le monument.</p>
+        </div>
+        <a href="/play" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Abandonner
+        </a>
+    </div>
+
+    <div class="puzzle-hint shadow-sm">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <strong>Astuce :</strong> Déplacez les pièces en "drag and drop". <strong>Double-cliquez</strong> sur une pièce pour la faire pivoter.
+    </div>
+
+    <div hidden>
+        <span id="board-width">{{ board_width }}</span>
+        <span id="board-height">{{ board_height }}</span>
+        <span id="solution-hash">{{ solution_hash }}</span>
+        <span id="image-id">{{ image['id_image'] }}</span>
+        <input id="imageurl" type="hidden" value="{{ image['url'] }}">
+        <input id="imagesize" type="hidden" value="{{ board_width }}">
+        <input id="cellsize" type="hidden" value="{{ 50 / board_width }}">
+    </div>
+
+    <div class="game-container">
+        <div class="puzzle-board shadow-sm" id="board">
+            {% for row in range(board_width) %}
+			<div class="puzzle-row" id="puzzle-row-{{ row + 1 }}">
+				{% for col in range(board_height) %}
+				<div class="puzzle-cell" id="puzzle-cell-{{ row + 1 }}-{{ col + 1 }}">
+				</div>
+				{% endfor %}
+			</div>
+			{% endfor %}
+        </div>
+
+        <div class="piece-bank" id="tile-container">
+            <h6 class="text-uppercase fw-bold text-muted small mb-3">Pièces restantes</h6>
+            <div class="d-flex flex-wrap justify-content-center">
+                {% for i in range (board_width * board_height) %}
+                <div class="puzzle-tile" draggable="true" id="tile-wrapper-{{ i }}">
+                    <div class="puzzle-image-container">
+                        <img id="tile{{ i }}" style="transform: rotate(0deg)"></img>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/script-split-puzzle.js"></script>
+    <script src="/static/js/script-puzzle-tiles.js"></script>
+{% endblock %}

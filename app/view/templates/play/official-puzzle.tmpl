@@ -1,10 +1,10 @@
 {% extends "play/puzzle.tmpl" %}
 {% set nav_current = 3 %}
 
-{% block nav %}
-    {{ nav_tmpl.nav(nav_items, 3) }}
+{% block puzzle_title %}
+    Monument historique : {{ image['nom_monument'] if image['nom_monument'] else "Édifice inconnu" }}
 {% endblock %}
 
 {% block main %}
-{{ super() }}
+    {{ super() }}
 {% endblock %}

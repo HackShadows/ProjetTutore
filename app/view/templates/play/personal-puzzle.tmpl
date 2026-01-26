@@ -1,10 +1,10 @@
 {% extends "play/puzzle.tmpl" %}
 {% set nav_current = 3 %}
 
-{% block nav %}
-    {{ nav_tmpl.nav(nav_items, 3) }}
+{% block puzzle_title %}
+    Votre puzzle perso : {{ image['nom_image'] }}
 {% endblock %}
 
 {% block main %}
-{{ super() }}
+    {{ super() }}
 {% endblock %}
