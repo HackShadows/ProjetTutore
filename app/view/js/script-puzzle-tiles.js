@@ -53,7 +53,7 @@ tileContainer.addEventListener("drop", (e) => {
 
 
 const puzzleTiles = [];
-for( const containerChild of tileContainer.children){
+for( const containerChild of tileContainer.children[1].children){
 	if( containerChild.classList.contains("puzzle-tile") ){
 		puzzleTiles.push(containerChild);
 	}
