@@ -5,7 +5,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import shutil
-import unicodedata
 
 from controllers.connexionController import registerUser, logIn
 from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept, getImageById, \
