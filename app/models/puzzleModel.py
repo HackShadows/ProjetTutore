@@ -44,7 +44,7 @@ def deleteImageById(id: str):
 
 def selectImageByDept(id: str):
 	allImages = select('image', where=f"code_dept='{str(id)}' and public", join='lieu', using='nom_commune')
-	randomIndex = randint(0, len(allImages))
+	randomIndex = randint(0, len(allImages)-1)
 	return allImages[randomIndex] if len(allImages) > 0 else None
 
 def selectImageById(id: str):
