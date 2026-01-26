@@ -303,4 +303,3 @@ def post_revelerMonument(request: Request, id_image: str = Form(...), user_conte
 																							  "revele": True,
 																							  "monument": name
 																						  } | user_context)
-
