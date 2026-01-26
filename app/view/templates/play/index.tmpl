@@ -1,7 +1,67 @@
 {% extends "page.tmpl" %}
 {% set nav_current = 3 %}
 
+{% block css %}
+<style>
+    /* Effet de survol sur les cartes */
+    .mode-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        border: none;
+        border-radius: 15px;
+    }
+    .mode-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .mode-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
-<a href="/play/official-puzzle"><button class="btn btn-primary">Jouer à un puzzle officiel</button></a>
-<a href="/play/personal-puzzle"><button class="btn btn-primary">Jouer à un puzzle personnel</button></a>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark">Prêt pour un défi ?</h1>
+        <p class="lead text-muted">Choisissez comment vous souhaitez jouer aujourd'hui.</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5">
+            <div class="card h-100 shadow-sm mode-card text-center p-4 bg-white">
+                <div class="card-body d-flex flex-column">
+                    <div class="mode-icon text-primary">
+                        <i class="bi bi-bank"></i>
+                    </div>
+                    <h2 class="card-title h3 fw-bold mb-3">Puzzles Officiels</h2>
+                    <p class="card-text text-muted flex-grow-1">
+                        Explorez le patrimoine français ! Reconstituez les monuments historiques de nos départements.
+                    </p>
+                    <a href="/play/official-puzzle" class="btn btn-primary btn-lg stretched-link mt-3">
+                        Lancer l'exploration
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card h-100 shadow-sm mode-card text-center p-4 bg-white">
+                <div class="card-body d-flex flex-column">
+                    <div class="mode-icon text-info">
+                        <i class="bi bi-person-bounding-box"></i>
+                    </div>
+                    <h2 class="card-title h3 fw-bold mb-3">Puzzles Personnels</h2>
+                    <p class="card-text text-muted flex-grow-1">
+                        Jouez avec vos propres souvenirs. Retrouvez ici les images que vous avez téléchargées.
+                    </p>
+                    <a href="/play/personal-puzzle" class="btn btn-info btn-lg text-white stretched-link mt-3">
+                        Voir mes puzzles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,21 +1,103 @@
 {% extends "page.tmpl" %}
 {% set nav_current = 0 %}
 
+{% block css %}
+<style>
+    /* Style pour la bannière d'accueil */
+    .hero-banner {
+        background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%);
+        color: white;
+        padding: 4rem 2rem;
+        border-radius: 1.5rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
+    }
+
+    /* Animation au survol des cartes */
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 1.25rem;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: #f8f9fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
-<h2>Puzzles à la carte :</h2>
-<p>
-	En allant sur la <a href="/map">carte des puzzles</a>, vous pouvez choisir un monument aléatoire dans un département.<br>
-	Vous aurez alors une photo du monument à reconstituer.<br>
-	Quand vous pensez l'avoir reconnu, vous pouvez deviner de quel monument il s'agit pour des points bonus.
-</p>
-<hr>
-<h2>Puzzles personels :</h2>
-<p>
-	Vous pouvez créer vos propres puzzles à partir de vos photos via <a href="/personal-puzzles/create-puzzle">Créer un puzzle</a>
-</p>
-<p>
-	{% if not user_name %}
-		<a href="/connexion">Connectez-vous</a> pour pouvoir créer des puzzles, ou <a href="/inscription">créez un compte</a> si vous n'en avez pas.
-	{% endif %}
-</p>
+<div class="container py-4">
+    <div class="hero-banner text-center shadow-lg">
+        <h1 class="display-3 fw-bold">GeoPuzzle</h1>
+        <p class="lead mb-4">Redécouvrez le patrimoine français, pièce par pièce.</p>
+        {% if not user_name %}
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/inscription" class="btn btn-light btn-lg px-4 fw-bold shadow-sm">Créer un compte</a>
+                <a href="/connexion" class="btn btn-outline-light btn-lg px-4">Se connecter</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card feature-card shadow-sm p-4">
+                <div class="card-body">
+                    <div class="icon-box shadow-sm">
+                        <i class="bi bi-map"></i>
+                    </div>
+                    <h2 class="h3 fw-bold mb-3">Puzzles à la carte</h2>
+                    <p class="text-muted">
+                        Utilisez notre <a href="/map" class="text-primary text-decoration-none fw-bold">carte interactive</a> pour choisir un monument aléatoire. 
+                    </p>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><i class="bi bi-puzzle text-primary me-2"></i>Reconstituez l'image</li>
+                        <li class="mb-2"><i class="bi bi-lightbulb text-primary me-2"></i>Devinez le nom du monument</li>
+                    </ul>
+                    <a href="/map" class="btn btn-primary w-100 py-2 fw-bold">Explorer la carte</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-5">
+            <div class="card feature-card shadow-sm p-4">
+                <div class="card-body d-flex flex-column">
+                    <div class="icon-box shadow-sm text-info">
+                        <i class="bi bi-camera"></i>
+                    </div>
+                    <h2 class="h3 fw-bold mb-3">Puzzles personnels</h2>
+                    <p class="text-muted mb-4">
+                        Jouez avec vos propres photos ! Téléchargez vos images préférées et transformez-les instantanément en puzzle.
+                    </p>
+                    
+                    <div class="mt-auto">
+                        {% if user_name %}
+                            <a href="/personal-puzzles/create-puzzle" class="btn btn-info text-white w-100 py-2 fw-bold">Créer un puzzle</a>
+                        {% else %}
+                            <div class="alert alert-secondary border-0 mb-0 py-2 small text-center">
+                                <i class="bi bi-lock-fill me-1"></i>
+                                <a href="/connexion" class="alert-link">Connectez-vous</a> pour cette fonctionnalité.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
