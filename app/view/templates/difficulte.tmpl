@@ -16,7 +16,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <img src="{{ image['url'] }}" class="img-fluid rounded border mb-3" style="max-height: 350px;">
-                <h5 class="card-title">{{ image['nom_monument'] if image['nom_monument'] else "Monument sélectionné" }}</h5>
+                <h5 class="card-title">{{ image['nom_image'] if mode == "personal" else "Monument sélectionné" }}</h5>
             </div>
         </div>
 

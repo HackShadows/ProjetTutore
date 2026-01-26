@@ -2,7 +2,11 @@
 {% set nav_current = 3 %}
 
 {% block puzzle_title %}
-    Monument historique : {{ image['nom_monument'] if image['nom_monument'] else "Édifice inconnu" }}
+	{% if departement_num %}
+    	Département : {{ departement_nom }} ({{ departement_num }})
+	{% else %}
+		Département inconnu
+	{% endif %}
 {% endblock %}
 
 {% block main %}
