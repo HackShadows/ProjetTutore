@@ -40,8 +40,7 @@ function splitImage(url, puzzlesize, tilesize) {
 async function demarrerJeu() {
 	const url = document.getElementById('imageurl').value;
 	const puzzlesize = document.getElementById('imagesize').value;
-	// const tilesize = document.getElementById('cellsize').value;
-	const tilesize = 300;
+	const tilesize = document.getElementById('resolution').value;
 
 	if (url) {
 		try {
