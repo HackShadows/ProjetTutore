@@ -5,7 +5,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import shutil
-import unicodedata
 
 from controllers.connexionController import registerUser, logIn
 from controllers.puzzleController import registerImage, getAllPuzzleFromUser, deleteImage, getImageDept, getImageById, \
@@ -282,7 +281,7 @@ def post_devinerMonument(request: Request, monument: str = Form(...), id_image: 
 	name = image['nom_monument']
 	name_no_accent = clean_string(name)
 	monument_no_accent = clean_string(monument)
-	if name_no_accent == monument_no_accent:
+	if name_no_accent == monument_no_accent or (len(monument_no_accent) > 3 and monument_no_accent in name_no_accent):
 		return templates.TemplateResponse(name="play/victoire.tmpl", request=request, context={
 																								  "image": image,
 																								  "trouve": True,
