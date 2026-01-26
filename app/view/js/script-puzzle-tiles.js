@@ -1,108 +1,107 @@
-const tileContainer = document.getElementById("tile-container");
+const board = document.getElementById("board");
+const bank = document.querySelector("#tile-container");
+
+const boardWidth = parseInt(document.getElementById("board-width").innerText);
+const boardHeight = parseInt(document.getElementById("board-height").innerText);
+const puzzleSolutionHash = document.getElementById("solution-hash").innerText;
+const imageId = parseInt(document.getElementById("image-id").innerText);
+
 let draggedItem = null;
 
-const boardWidth = parseInt( document.getElementById("board-width").innerText );
-const boardHeight = parseInt( document.getElementById("board-height").innerText );
-const puzzleSolutionHash =  document.getElementById("solution-hash").innerText;
-const imageId = parseInt( document.getElementById("image-id").innerText );
-
-let puzzleSolved = false;
-
-
-tileContainer.addEventListener("dragstart", (e) => {
-	draggedItem = e.target;
+// Gestion du Drag & Drop robuste
+document.addEventListener("dragstart", (e) => {
+    const tile = e.target.closest(".puzzle-tile");
+    if (tile) {
+        draggedItem = tile;
+        e.dataTransfer.setData("text/plain", tile.id);
+        setTimeout(() => tile.style.opacity = "0.5", 0);
+    }
 });
 
-tileContainer.addEventListener("dragover", (e) => {
-	e.preventDefault();
+document.addEventListener("dragend", (e) => {
+    if (draggedItem) draggedItem.style.opacity = "1";
 });
 
-tileContainer.addEventListener("drop", (e) => {
-	e.preventDefault();
-	const targetItem = e.target;
-	if( targetItem && targetItem !== draggedItem )
-	{
-		if( targetItem.classList.contains("puzzle-cell"))// déplacement dans le plateau
-		{
-			targetItem.insertBefore(draggedItem.parentElement.parentElement, targetItem.firstElementChild);
-
-			const solution = getSolution(puzzleTiles);
-			console.log(`solution : ${solution}`);
-			if( solution.length === boardWidth * boardHeight && hashSolution(solution, boardWidth) === puzzleSolutionHash ) {
-				console.log("le puzzle est fini");
-				puzzleSolved = true;
-				window.location.href = `/victoire?image_id=${imageId}`
-
-			}
-		}
-		else if( targetItem.parentElement.parentElement.classList.contains("puzzle-tile") ) {// inversion avec une autre tuile
-			const draggedIndex = [...tileContainer.children].indexOf(draggedItem.parentElement.parentElement);
-			const targetIndex = [...tileContainer.children].indexOf(targetItem.parentElement.parentElement);
-			if (draggedIndex < targetIndex) {
-				tileContainer.insertBefore(draggedItem.parentElement.parentElement, targetItem.parentElement.parentElement.nextSibling);
-			}
-			else {
-				tileContainer.insertBefore(draggedItem.parentElement.parentElement, targetItem.parentElement.parentElement);
-			}
-		}
-		else {// déplacement hors du plateau
-			tileContainer.insertBefore(draggedItem.parentElement.parentElement, tileContainer.children[1]);
-		}
-	}
+document.addEventListener("dragover", (e) => {
+    e.preventDefault(); // Nécessaire pour autoriser le drop
 });
 
+document.addEventListener("drop", (e) => {
+    e.preventDefault();
+    if (!draggedItem) return;
 
-const puzzleTiles = [];
-for( const containerChild of tileContainer.children[1].children){
-	if( containerChild.classList.contains("puzzle-tile") ){
-		puzzleTiles.push(containerChild);
-	}
+    const targetCell = e.target.closest(".puzzle-cell");
+    const targetBank = e.target.closest("#tile-container");
+
+    if (targetCell) {
+        // Drop sur le plateau : si la cellule est déjà occupée, on échange
+        if (targetCell.children.length > 0 && targetCell.children[0] !== draggedItem) {
+            bank.appendChild(targetCell.children[0]);
+        }
+        targetCell.appendChild(draggedItem);
+        checkVictory();
+    } 
+    else if (targetBank) {
+        // Drop dans la réserve
+        bank.appendChild(draggedItem);
+    }
+});
+
+// Double clic pour rotation
+document.addEventListener("dblclick", (e) => {
+    const tile = e.target.closest(".puzzle-tile");
+    if (tile) {
+        const img = tile.querySelector("img");
+        let currentRotation = parseInt(img.style.transform.match(/\d+/) || 0);
+        let newRotation = (currentRotation + 90) % 360;
+        img.style.transform = `rotate(${newRotation}deg)`;
+        checkVictory();
+    }
+});
+
+function checkVictory() {
+    const allTiles = document.querySelectorAll(".puzzle-tile");
+    const solution = getSolution(allTiles);
+    
+    // Le puzzle n'est fini que si toutes les pièces sont sur le plateau (ont un parent cellule)
+    const tilesOnBoard = board.querySelectorAll(".puzzle-tile").length;
+    
+    if (tilesOnBoard === boardWidth * boardHeight) {
+        if (hashSolution(solution, boardWidth) === puzzleSolutionHash) {
+            console.log("Félicitations !");
+            window.location.href = `/victoire?image_id=${imageId}`;
+        }
+    }
 }
 
-for( puzzleTile of puzzleTiles )
-{
-	puzzleTile.addEventListener("dblclick", (e) => {
-		console.log("tile double clicked");
-		let tileRotation = parseInt( e.target.style.transform.match(/\d+/) );
-		console.log(`tileRotation : ${tileRotation}`);
-		tileRotation = (tileRotation + 90) % 360;
-		console.log(`tileRotation : ${tileRotation}`);
-		e.target.style.transform = "rotate("+tileRotation+"deg)";
-	});
-}
-// retourne une liste de transformations de tuiles (voir hashSolution())
-function getSolution(puzzleTilesElements)
-{
-	let res = [];
-	for( tileElement of puzzleTilesElements ){
-		let parentCell = tileElement.parentElement;
-		if( !parentCell || !parentCell.classList.contains("puzzle-cell") )
-			continue;
-
-		let tileId = parseInt( tileElement.id.split("-")[2] );
-		let cellIdData = parentCell.id.split("-");
-		let tileRow = parseInt( cellIdData[2] );
-		let tileCol = parseInt( cellIdData[3] );
-		let tileRot = parseInt( tileElement.firstElementChild.firstElementChild.style.transform.match(/\d+/) );
-		// let tileRot = 0;
-		res.push( {"id": tileId, "row": tileRow, "col": tileCol, "rotDeg": tileRot} );
-	}
-	res.sort((a, b) => {
-        if (a.row !== b.row) return a.row - b.row;
-        return a.col - b.col;
+function getSolution(puzzleTilesElements) {
+    let res = [];
+    puzzleTilesElements.forEach(tileElement => {
+        let parentCell = tileElement.closest(".puzzle-cell");
+        if (parentCell) {
+            let tileId = parseInt(tileElement.id.split("-")[2]);
+            let cellIdData = parentCell.id.split("-"); // puzzle-cell-row-col
+            let tileRow = parseInt(cellIdData[2]);
+            let tileCol = parseInt(cellIdData[3]);
+            let img = tileElement.querySelector("img");
+            let tileRot = parseInt(img.style.transform.match(/\d+/) || 0);
+            
+            res.push({ "id": tileId, "row": tileRow, "col": tileCol, "rotDeg": tileRot });
+        }
     });
-	console.log(`res : ${res}`);
-	return res;
+
+    // Tri par ligne puis par colonne pour le hash
+    res.sort((a, b) => (a.row - b.row) || (a.col - b.col));
+    return res;
 }
 
-// DOIT ETRE FONCTIONNELLEMENT IDENTIQUE A LA FONCTION HASH DU SERVEUR
-function hashSolution(solution, size){
-	const offset = 13;
-	let res = "";
-	let char = 0;
-	for( const tileConfig of solution ){
-		char = tileConfig.row * size + tileConfig.col + tileConfig.rotDeg;
-		res += String.fromCharCode(char + offset);
-	}
-	return res;
+function hashSolution(solution, size) {
+    const offset = 13;
+    let res = "";
+    for (const tileConfig of solution) {
+        // Calcul du hash synchronisé avec le serveur
+        let charCode = tileConfig.row * size + tileConfig.col + tileConfig.rotDeg;
+        res += String.fromCharCode(charCode + offset);
+    }
+    return res;
 }
