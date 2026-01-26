@@ -2,10 +2,10 @@
 {% set nav_current = 3 %}
 
 {% block puzzle_title %}
-	{% if departement_num %}
-    	Département : {{ departement_nom }} ({{ departement_num }})
+	{% if image["nom_commune"] %}
+    	Commune : {{ image["nom_commune"] }}
 	{% else %}
-		Département inconnu
+		Commune inconnue
 	{% endif %}
 {% endblock %}
 
