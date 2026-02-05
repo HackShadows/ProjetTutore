@@ -1,0 +1,7 @@
+psycopg2-binary
+logzero >= 1.7
+Jinja2 >= 3.1.4
+fastapi[standard]
+python-jose[cryptography]
+bcrypt
+pydantic

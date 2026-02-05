@@ -1,6 +1,21 @@
-**/.idea/
-**/.vscode/
-**/__pycache__/
-**/.ve*/
-**/*.swp
-**/user_images/*
+# --- Python & Bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Environnement Virtuels ---
+.venv/
+
+# --- IDE & Editeurs ---
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Système d'exploitation ---
+.DS_Store
+Thumbs.db
+
+# --- Uploads Utilisateurs ---
+app/view/img/user_images/*
+!app/view/img/user_images/.gitkeep
